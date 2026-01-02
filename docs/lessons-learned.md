@@ -1,6 +1,2 @@
-## Lessons Learned
-
-- Over-blocking causes usability issues
-- Social platforms require selective filtering
-- VPN DNS behavior varies by provider
-- OPSEC is about balance, not isolation
+Blocking too aggressively caused breakage in push notifications.
+Incremental tuning proved essential.

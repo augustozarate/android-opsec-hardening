@@ -1,7 +1,5 @@
-## OPSEC Profiles
+## Hybrid Social Profile
+- Social media: view-only
+- DNS: aggressive tracking block
+- Allowlist minimal for stability
 
-- Baseline: No filtering
-- Hybrid: Telemetry reduction with full usability
-- Bunker: Aggressive filtering with reduced functionality
-
-This project focuses on the Hybrid profile.
