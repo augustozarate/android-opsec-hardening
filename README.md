@@ -114,6 +114,16 @@ No personal data, identifiers, or raw logs are included in this repository.
 
 ---
 
+## Ethical Notice
+
+This project focuses on defensive security, privacy hardening, and OPSEC awareness.
+It does not promote:
+- Circumvention of laws
+- Bypassing device security mechanisms
+- Abuse of services or platforms
+
+All configurations are reversible and documented.
+
 ## Disclaimer
 
 This repository is provided for educational and defensive purposes only.
