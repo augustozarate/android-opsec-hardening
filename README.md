@@ -15,3 +15,4 @@ stability and usability, including essential services and major social platforms
 
 This repository is a case study and methodology reference.
 No personal configurations or identifiers are included.
+
