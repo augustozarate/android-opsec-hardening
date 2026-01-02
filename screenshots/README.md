@@ -1,0 +1,1 @@
+Screenshots are optional and must be anonymized before upload.
