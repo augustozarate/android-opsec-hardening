@@ -1,272 +1,261 @@
-#🛡️ Hybrid Multi-Device OPSEC Strategy
-##🎯 Objective
-A platform-agnostic OPSEC hardening approach using:
+# 🛡️ OPSEC FOLLOW-UP – Hybrid Multi-Device Strategy
 
-NextDNS as a secure DNS filtering layer
+## 🎯 Objective
 
-A trustworthy VPN service for encrypted transport
+This document defines a platform-agnostic OPSEC hardening approach using:
 
-A hybrid allow/block model balancing privacy with usability
+- **NextDNS** as a secure DNS filtering layer  
+- A **trustworthy VPN** service for encrypted transport  
+- A **hybrid allow/block model** that balances privacy with usability  
 
-Compatible with:
+The strategy is designed to be compatible with:
 
-✅ Android
+- ✅ Android  
+- ✅ iOS / iPadOS  
+- ✅ Windows  
+- ✅ macOS  
+- ✅ Linux  
 
-✅ iOS / iPadOS
+### Core Goals
 
-✅ Windows
+- Minimize telemetry and background tracking  
+- Reduce unnecessary DNS exposure (“DNS noise”)  
+- Block major advertising networks  
+- Preserve critical functionality like messaging, app updates, and logins  
+- Provide repeatable configurations for personal or small-team use  
 
-✅ macOS
+---
 
-✅ Linux
+# 🔴 Recommended Global Denylist
 
-#🔒 Core Goals
-Minimize telemetry and background tracking
+## Google Telemetry & Analytics – High Priority
 
-Reduce unnecessary DNS exposure ("DNS noise")
+Safe to block on all devices:
 
-Block major advertising networks
+- `app-measurement.com`  
+- `firebaseinstallations.googleapis.com`  
+- `firebase-settings.crashlytics.com`  
+- `clienttracing-pa.googleapis.com`  
+- `people-pa.googleapis.com`  
+- `playatoms-pa.googleapis.com`  
+- `appsgrowthpromo-pa.googleapis.com`  
+- `taskassist-pa.googleapis.com`  
+- `voilatile-pa.googleapis.com`  
+- `voledevice-pa.googleapis.com`  
+- `footprints-pa.googleapis.com`  
+- `metrics.ios.googleapis.com`  
+- `analytics.google.com`  
+- `adservice.google.com`  
+- `stats.g.doubleclick.net`  
+- `googleads.g.doubleclick.net`  
+- `ads.google.com`  
 
-Preserve critical functionality (messaging, app updates, logins)
+### What These Domains Do
 
-Provide repeatable configurations for personal or small-team use
+They are mainly used for:
 
-#🔴 Global Denylist Recommendations
-##Google Telemetry & Analytics – High Priority
-###Safe to block on all devices without breaking core functionality
+- Usage statistics collection  
+- Device location reporting  
+- Crash analytics  
+- Advertising performance measurement  
 
-app-measurement.com
-firebaseinstallations.googleapis.com
-firebase-settings.crashlytics.com
-clienttracing-pa.googleapis.com
-people-pa.googleapis.com
-playatoms-pa.googleapis.com
-appsgrowthpromo-pa.googleapis.com
-taskassist-pa.googleapis.com
-voilatile-pa.googleapis.com
-footprints-pa.googleapis.com
-metrics.ios.googleapis.com
-analytics.google.com
-adservice.google.com
-stats.g.doubleclick.net
-googleads.g.doubleclick.net
-ads.google.com
-doubleclick.net
+### Why Block Them?
 
-##What these domains do:
+Blocking these services typically:
 
-Usage statistics collection
+- Does not affect Play Store downloads  
+- Does not break Google logins  
+- Dramatically reduces tracking infrastructure  
+- Cleans up DNS logs  
 
-Device location reporting
+---
 
-Crash analytics
+## Meta Platforms Tracking (Facebook / Instagram)
 
-Advertising performance measurement
+Blockable while keeping essential access:
 
-##Why block them:
+- `edge-mqtt.facebook.com`  
+- `b-graph.facebook.com`  
+- `graph-fallback.facebook.com`  
+- `connect.facebook.net`  
+- `mqtt-mini.facebook.com`  
+- `analytics.facebook.com`  
+- `collector.facebook.com`  
+- `graph.instagram.com`  
+- `cdninstagram.com`  
 
-Typically doesn't affect app downloads
+👉 **Keep `facebook.com` and `instagram.com` allowed if you actively use them.**
 
-Doesn't break Google logins
+### Function
 
-Dramatically reduces tracking infrastructure
+These domains handle:
 
-Keeps DNS logs cleaner
+- Behavioral profiling  
+- Embedded social widgets  
+- Ad targeting  
+- Real-time engagement metrics  
 
-#Meta Platforms Tracking (Facebook/Instagram)
-##Recommended to block while keeping essential access
+---
 
-edge-mqtt.facebook.com
-b-graph.facebook.com
-graph-fallback.facebook.com
-connect.facebook.net
-mqtt-mini.facebook.com
-analytics.facebook.com
-collector.facebook.com
-graph.instagram.com
-cdninstagram.com
-test-gateway.instagram.com
+## Browser Telemetry
 
-##Note: Keep facebook.com and instagram.com allowed if you actively use them.
+### Mozilla / Firefox
 
-##Function:
+- `incoming.telemetry.mozilla.org`  
+- `location.services.mozilla.com`  
+- `telemetry.mozilla.org`  
+- `detectportal.firefox.com`  
 
-Behavioral profiling
+### Brave Browser
 
-Embedded social widgets
+- `collector.bsg.brave.com`  
+- `analytics.brave.com`  
+- `p3a.brave.com`  
 
-Ad targeting
+---
 
-Real-time engagement metrics
+## Microsoft Telemetry (PCs)
 
-#Browser Telemetry
-##Mozilla/Firefox:
+Ideal for Windows environments:
 
-incoming.telemetry.mozilla.org
-location.services.mozilla.com
-telemetry.mozilla.org
-detectportal.firefox.com
+- `vortex.data.microsoft.com`  
+- `settings-win.data.microsoft.com`  
+- `watson.telemetry.microsoft.com`  
+- `self.events.data.microsoft.com`  
+- `browser.events.data.microsoft.com`  
+- `activity.windows.com`  
 
-##Brave Browser:
+---
 
-collector.bsg.brave.com
-analytics.brave.com
-p3a.brave.com
+## Generic Advertising Infrastructure
 
-These domains often generate background reports unrelated to direct browsing activity.
+Recommended for all ecosystems:
 
-#Microsoft Telemetry (PC Focused)
-##Ideal to block on Windows environments
-
-vortex.data.microsoft.com
-settings-win.data.microsoft.com
-watson.telemetry.microsoft.com
-self.events.data.microsoft.com
-browser.events.data.microsoft.com
-activity.windows.com
-
-Reduces Windows-specific tracking without harming basic OS operation.
-
-#Generic Advertising Infrastructure
-##Recommended for all ecosystems
-
-taboola.com
-outbrain.com
-criteo.net
-adcolony.com
-inmobi.com
-chartbeat.net
-scorecardresearch.com
-branch.io
-adjust.com
-adnxs.com
+- `taboola.com`  
+- `outbrain.com`  
+- `criteo.net`  
+- `adcolony.com`  
+- `inmobi.com`  
+- `chartbeat.net`  
+- `scorecardresearch.com`  
+- `branch.io`  
+- `adjust.com`  
+- `adnxs.com`  
+- `doubleclick.net`  
 
 These represent cross-platform ad and tracking networks that generate significant DNS leakage.
 
-#🟢 Critical Global Allowlist
-##System Stability Domains
-##⚠️ NEVER BLOCK THESE
+---
 
-connectivitycheck.gstatic.com
-time.android.com
-android.clients.google.com
-android.apis.google.com
-play.googleapis.com
-play-fe.googleapis.com
-www.googleapis.com
+# 🟢 CRITICAL GLOBAL ALLOWLIST
 
-Purpose:
+## System Stability Domains
 
-Captive portal detection
+⚠️ **NEVER BLOCK THESE**
 
-System clock synchronization
+- `connectivitycheck.gstatic.com`  
+- `time.android.com`  
+- `android.clients.google.com`  
+- `android.apis.google.com`  
+- `play.googleapis.com`  
+- `play-fe.googleapis.com`  
+- `www.googleapis.com`  
 
-Core Google API communication
+### Purpose
 
-Application updates
+- Captive portal detection  
+- Time synchronization  
+- Core API communication  
+- Application updates  
 
-Mandatory for stable operation on mobile and desktop devices.
+These are mandatory for stable operation on mobile and desktop devices.
 
-##Messaging Services – Essential
-WhatsApp:
+---
 
-g.whatsapp.net
-e*.whatsapp.net
-media-*.cdn.whatsapp.net
-static.whatsapp.net
-www.whatsapp.com
-graph.whatsapp.com
-g-fallback.whatsapp.net
+## Messaging Services – Essential
 
-Threema:
+### WhatsApp (ideal for family/personal use)
 
-*.threema.ch
-These rules ensure secure communication remains unaffected.
+- `g.whatsapp.net`  
+- `e*.whatsapp.net`  
+- `media-*.cdn.whatsapp.net`  
+- `static.whatsapp.net`  
+- `www.whatsapp.com`  
+- `graph.whatsapp.com`  
+- `g-fallback.whatsapp.net`  
 
-##Proton Ecosystem
-For privacy tools you use
+### Threema
 
-vpn-api.proton.me
-mail-api.proton.me
-pass-api.proton.me
-Important: Keep these allowed so Proton services continue to function correctly.
+- `*.threema.ch`
 
-##🧩 Hybrid Model Recommendations
-###Public Wi-Fi OPSEC
+Ensures secure communication remains unaffected.
+
+---
+
+# 🧩 Hybrid Model Recommendations
+
+## Public Wi-Fi OPSEC
+
 On untrusted networks:
 
-Keep VPN always enabled
+- Keep VPN always enabled  
+- Use encrypted DNS transport (DoH/DoT)  
+- Activate reputable blocklists  
+- Avoid adding new devices/accounts until secured  
 
-Use encrypted DNS transport (DoH/DoT)
+---
 
-Activate reputable blocklists:
+# 💡 Ethical Use Guidelines
 
-HaGeZi – Multi ULTIMATE
-
-OISD
-
-AdGuard Tracking Protection
-
-Avoid adding new devices or accounts until secured
-
-##⚖️ Ethical Use Guidelines
 This repository promotes:
 
-Personal privacy enhancement
+- Personal privacy enhancement  
+- Home network protection  
+- Educational research  
+- Transparent security experimentation  
 
-Home network protection
+### Do NOT Use This Configuration To:
 
-Educational research
+- ❌ Evade corporate monitoring  
+- ❌ Disrupt third-party services  
+- ❌ Interfere with networks you don’t own  
+- ❌ Bypass legal restrictions  
 
-Transparent security experimentation
+---
 
-Do NOT use this configuration to:
+# 📈 Metrics Interpretation
 
-❌ Evade corporate monitoring
-
-❌ Disrupt third-party networks
-
-❌ Interfere with services you don't own
-
-❌ Bypass legal or contractual restrictions
-
-##📈 Metrics Interpretation
 Typical observations when properly implemented:
 
-Advertising and telemetry domains generate the majority of blocked queries
+- Advertising and telemetry domains generate the majority of blocked queries  
+- Core services remain resolvable  
+- DNS logs show a clear drop in background chatter  
 
-Core services like g.whatsapp.net and play.googleapis.com remain resolvable
+### Continue Monitoring
 
-DNS logs show a clear drop in background chatter
+- New or unknown root domains  
+- Sudden spikes after installing new apps  
+- Failures in connectivity checks  
+- Changes after OS updates  
 
-Continue monitoring:
+---
 
-New or unknown root domains
+# 🔐 VPN Recommendations
 
-Sudden spikes after installing new apps
-
-Failures in connectivity checks
-
-Behavior changes after OS updates
-
-Modifications required after major platform upgrades
-
-##🔐 VPN Recommendations
 For responsible OPSEC deployments:
 
-Mullvad VPN – strict no-logs, privacy-first
+- **Mullvad VPN** – strict no-logs, privacy-first  
+- **IVPN** – advanced anti-tracking controls  
+- **ProtonVPN** – reliable and easy for multi-device use  
 
-IVPN – advanced anti-tracking controls
+---
 
-ProtonVPN – reliable and easy for multi-device family use
+## 📝 Final Note
 
-##📝 Final Note
 Hardening should always be:
 
-Incremental
+- Incremental  
+- Tested per profile  
+- Reversible  
 
-Tested per profile
-
-Reversible
-
-🧠 Stability and usability are more important than absolute blocking.
+🧠 **Stability and usability are more important than absolute blocking.**
