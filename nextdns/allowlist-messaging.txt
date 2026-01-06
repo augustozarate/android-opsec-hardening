@@ -1,0 +1,21 @@
+play.googleapis.com
+g.whatsapp.net
+e*.whatsapp.net
+media-*.cdn.whatsapp.net
+static.whatsapp.net
+www.whatsapp.com
+graph.whatsapp.com
+dit.whatsapp.net
+g-fallback.whatsapp.net
+
+# If you have Threema
+ds.g-20.0.threema.ch
+*.threema.ch
+
+login.microsoftonline.com
+outlook.office365.com
+
+# If you have Proton
+mail-api.proton.me
+pass-api.proton.me
+vpn-api.proton.me

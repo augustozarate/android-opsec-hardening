@@ -1,0 +1,11 @@
+dc.di.atlas.samsung.com
+dls-udc.dqa.samsung.com
+dqa.samsung.com
+vas.samsungapps.com
+api.mop.apps.samsung.com
+api.account.samsung.com
+wu2z-api.samsungcloud.com
+play.samsungcloud.com
+smetrics.samsung.com
+samsungads.com
+samsungads.co.kr
