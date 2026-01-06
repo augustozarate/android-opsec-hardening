@@ -12,12 +12,16 @@ A hybrid allow/block model that balances privacy with usability
 The strategy is designed to be compatible with:
 
 ✅ Android
+
 ✅ iOS / iPadOS
+
 ✅ Windows
+
 ✅ macOS
+
 ✅ Linux
 
-Core Goals
+🔒 Core Goals
 
 Minimize telemetry and background tracking
 
@@ -35,24 +39,38 @@ Google Telemetry & Analytics – High Priority
 Safe to block on all devices:
 
 app-measurement.com
+
 firebaseinstallations.googleapis.com
+
 firebase-settings.crashlytics.com
+
 clienttracing-pa.googleapis.com
+
 people-pa.googleapis.com
+
 playatoms-pa.googleapis.com
+
 appsgrowthpromo-pa.googleapis.com
+
 taskassist-pa.googleapis.com
+
 voilatile-pa.googleapis.com
-voledevice-pa.googleapis.com
-voledevice-pa.googleapis.com
+
 footprints-pa.googleapis.com
+
 metrics.ios.googleapis.com
+
 analytics.google.com
+
 adservice.google.com
+
 stats.g.doubleclick.net
+
 googleads.g.doubleclick.net
+
 ads.google.com
-adservice.google.com
+
+doubleclick.net
 
 What These Domains Do
 
@@ -70,29 +88,37 @@ Why Block Them?
 
 Blocking these services typically:
 
-Does not affect Play Store downloads
+Does not affect app downloads
 
 Does not break Google logins
 
 Dramatically reduces tracking infrastructure
 
-Cleans up DNS logs
+Keeps DNS logs much cleaner
 
 Meta Platforms Tracking (Facebook / Instagram)
 
-Blockable while keeping essential access:
+Recommended to block while keeping essential access:
 
 edge-mqtt.facebook.com
-b-graph.facebook.com
-graph-fallback.facebook.com
-connect.facebook.net
-mqtt-mini.facebook.com
-analytics.facebook.com
-collector.facebook.com
-graph.instagram.com
-cdninstagram.com
-test-gateway.instagram.com
 
+b-graph.facebook.com
+
+graph-fallback.facebook.com
+
+connect.facebook.net
+
+mqtt-mini.facebook.com
+
+analytics.facebook.com
+
+collector.facebook.com
+
+graph.instagram.com
+
+cdninstagram.com
+
+test-gateway.instagram.com
 
 👉 Keep facebook.com and instagram.com allowed if you actively use them.
 
@@ -108,46 +134,70 @@ Ad targeting
 
 Real-time engagement metrics
 
-Browser Telemetry
+🌐 Browser Telemetry
 Mozilla / Firefox
+
 incoming.telemetry.mozilla.org
+
 location.services.mozilla.com
+
 telemetry.mozilla.org
+
 detectportal.firefox.com
 
 Brave Browser
+
 collector.bsg.brave.com
+
 analytics.brave.com
+
 p3a.brave.com
 
-Microsoft Telemetry (PCs)
+These domains often generate background reports unrelated to direct browsing activity.
 
-Ideal for Windows environments:
+🪟 Microsoft Telemetry (PC Focused)
+
+Ideal to block on Windows environments:
 
 vortex.data.microsoft.com
+
 settings-win.data.microsoft.com
+
 watson.telemetry.microsoft.com
+
 self.events.data.microsoft.com
+
 browser.events.data.microsoft.com
+
 activity.windows.com
 
-Generic Advertising Infrastructure
+Blocking them reduces Windows-specific tracking without harming basic OS operation.
+
+📢 Generic Advertising Infrastructure
 
 Recommended for all ecosystems:
 
 taboola.com
-outbrain.com
-criteo.net
-adcolony.com
-inmobi.com
-chartbeat.net
-scorecardresearch.com
-branch.io
-adjust.com
-adnxs.com
-adservice.google.com
-doubleclick.net
 
+outbrain.com
+
+criteo.net
+
+adcolony.com
+
+inmobi.com
+
+chartbeat.net
+
+scorecardresearch.com
+
+branch.io
+
+adjust.com
+
+adnxs.com
+
+doubleclick.net
 
 These represent cross-platform ad and tracking networks that generate significant DNS leakage.
 
@@ -157,49 +207,67 @@ System Stability Domains
 ⚠️ NEVER BLOCK THESE
 
 connectivitycheck.gstatic.com
+
 time.android.com
+
 android.clients.google.com
+
 android.apis.google.com
+
 play.googleapis.com
+
 play-fe.googleapis.com
+
 www.googleapis.com
 
 Purpose
 
 Captive portal detection
 
-Time synchronization
+System clock synchronization
 
-Core API communication
+Core Google API communication
 
 Application updates
 
 These are mandatory for stable operation on mobile and desktop devices.
 
-Messaging Services – Essential
-WhatsApp (ideal for family/personal use)
+💬 Messaging Services – Essential
+WhatsApp
+
+To preserve communications:
+
 g.whatsapp.net
+
 e*.whatsapp.net
+
 media-*.cdn.whatsapp.net
+
 static.whatsapp.net
+
 www.whatsapp.com
+
 graph.whatsapp.com
+
 g-fallback.whatsapp.net
-dit.whatsapp.net
 
 Threema
+
 *.threema.ch
 
+These rules ensure secure communication remains unaffected.
 
-Ensures secure communication remains unaffected.
+🧩 Proton Ecosystem
 
-Proton Ecosystem
-
-If you use privacy tools like Proton (as you do in your personal setup):
+For privacy tools you use:
 
 vpn-api.proton.me
+
 mail-api.proton.me
+
 pass-api.proton.me
+
+Important: keep these allowed so Proton services continue to function correctly.
 
 🧩 Hybrid Model Recommendations
 Public Wi-Fi OPSEC
@@ -210,7 +278,7 @@ Keep VPN always enabled
 
 Use encrypted DNS transport (DoH/DoT)
 
-Activate reputable blocklists:
+Activate reputable blocklists such as:
 
 HaGeZi – Multi ULTIMATE
 
@@ -218,9 +286,9 @@ OISD
 
 AdGuard Tracking Protection
 
-Avoid adding new devices/accounts until secured
+Avoid adding new devices or accounts until secured
 
-💡 Ethical Use Guidelines
+⚖️ Ethical Use Guidelines
 
 This repository promotes:
 
@@ -235,9 +303,12 @@ Transparent security experimentation
 Do NOT Use This Configuration To:
 
 ❌ Evade corporate monitoring
-❌ Disrupt third-party services
-❌ Interfere with networks you don’t own
-❌ Bypass legal restrictions
+
+❌ Disrupt third-party networks
+
+❌ Interfere with services you don’t own
+
+❌ Bypass legal or contractual restrictions
 
 📈 Metrics Interpretation
 
@@ -245,12 +316,7 @@ Typical observations when properly implemented:
 
 Advertising and telemetry domains generate the majority of blocked queries
 
-Core services like:
-
-g.whatsapp.net
-
-play.googleapis.com
-remain resolvable
+Core services like g.whatsapp.net and play.googleapis.com remain resolvable
 
 DNS logs show a clear drop in background chatter
 
@@ -262,7 +328,9 @@ Sudden spikes after installing new apps
 
 Failures in connectivity checks
 
-Changes after OS updates
+Behavior changes after OS updates
+
+Modifications required after major platform upgrades
 
 🔐 VPN Recommendations
 
