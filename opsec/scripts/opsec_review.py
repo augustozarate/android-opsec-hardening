@@ -1,176 +1,165 @@
-#!/usr/bin/env python3
 """
-OPSEC Review Script
--------------------
-Purpose:
-- Parse DNS logs
-- Normalize domains
-- Extract root domains
-- Classify OPSEC relevance
-- Generate a monthly markdown report
+OPSEC DNS Review Tool
+Hybrid Multi-Device OPSEC Analysis
 
-Author: Augusto Zarate
-Mode: Offline / Reproducible / OPSEC-safe
+- Parses DNS query logs
+- Compares against OPSEC baselines
+- Detects telemetry, ads, phantom TLDs
+- Generates Markdown report (GitHub-ready)
 """
 
-import sys
 import argparse
-from pathlib import Path
 from collections import Counter
-from datetime import datetime
+from pathlib import Path
+from datetime import datetime, timezone
+# -------------------------
+# Defaults (OPSEC layout)
+# -------------------------
+BASE_DIR = Path(__file__).resolve().parents[1]
+BASELINE_DIR = BASE_DIR / "baseline"
+DATA_DIR = BASE_DIR / "data"
+REPORTS_DIR = BASE_DIR / "reports"
+
+DEFAULT_INPUT = DATA_DIR / "dns_queries.txt"
+DEFAULT_REPORT = REPORTS_DIR / "opsec-report.md"
+
+DENYLIST_FILE = BASELINE_DIR / "denylist.txt"
+BASELINE_ROOTS_FILE = BASELINE_DIR / "baseline-roots.txt"
+PHANTOM_TLDS_FILE = BASELINE_DIR / "phantom-tlds.txt"
+
 
 # -------------------------
-# Utility functions
+# Helpers
 # -------------------------
+def load_list(path):
+    if not path.exists():
+        return set()
+    return {line.strip().lower() for line in path.read_text().splitlines() if line.strip() and not line.startswith("#")}
 
-def normalize_domain(domain: str) -> str:
-    """Normalize domain (lowercase, strip spaces)."""
-    return domain.strip().lower()
 
-
-def extract_root_domain(domain: str) -> str:
-    """
-    Extract root domain (simple heuristic).
-    Example:
-        traffic-nts-ip-assoc.xy.fbcdn.net -> fbcdn.net
-    """
+def extract_root(domain):
     parts = domain.split(".")
-    if len(parts) >= 2:
-        return ".".join(parts[-2:])
-    return domain
+    return ".".join(parts[-2:]) if len(parts) >= 2 else domain
 
 
-def load_domains(file_path: Path) -> list[str]:
-    """Load domains from file (one per line)."""
-    domains = []
-    with file_path.open("r", encoding="utf-8", errors="ignore") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            domains.append(normalize_domain(line))
-    return domains
+def extract_tld(domain):
+    return domain.split(".")[-1]
 
 
 # -------------------------
-# Classification logic
+# Core logic
 # -------------------------
+def analyze_domains(domains, denylist, baseline_roots, phantom_tlds):
+    counts = Counter(domains)
 
-TELEMETRY_KEYWORDS = (
-    "telemetry",
-    "analytics",
-    "metrics",
-    "crash",
-    "measurement",
-    "tracking",
-)
-
-AD_KEYWORDS = (
-    "ads",
-    "doubleclick",
-    "adservice",
-    "marketing",
-    "promo",
-)
-
-CORE_ALLOWLIST = (
-    "googleapis.com",
-    "whatsapp.net",
-    "proton.me",
-    "threema.ch",
-    "microsoftonline.com",
-)
-
-
-def classify_domain(domain: str) -> str:
-    """Classify domain based on heuristics."""
-    for k in CORE_ALLOWLIST:
-        if domain.endswith(k):
-            return "core"
-
-    for k in TELEMETRY_KEYWORDS:
-        if k in domain:
-            return "telemetry"
-
-    for k in AD_KEYWORDS:
-        if k in domain:
-            return "ads"
-
-    return "unknown"
-
-
-# -------------------------
-# Report generation
-# -------------------------
-
-def generate_report(domains: list[str], output_path: Path):
-    roots = [extract_root_domain(d) for d in domains]
-    counter = Counter(roots)
-
-    classified = {
-        "core": [],
-        "telemetry": [],
-        "ads": [],
-        "unknown": [],
+    analysis = {
+        "total_queries": sum(counts.values()),
+        "unique_domains": len(counts),
+        "denylist_hits": {},
+        "baseline_hits": {},
+        "phantom_tld_hits": {},
+        "unknown_domains": {}
     }
 
-    for root, count in counter.items():
-        category = classify_domain(root)
-        classified[category].append((root, count))
+    for domain, count in counts.items():
+        root = extract_root(domain)
+        tld = extract_tld(domain)
 
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+        if root in denylist:
+            analysis["denylist_hits"][domain] = count
+        elif root in baseline_roots:
+            analysis["baseline_hits"][domain] = count
+        elif tld in phantom_tlds:
+            analysis["phantom_tld_hits"][domain] = count
+        else:
+            analysis["unknown_domains"][domain] = count
 
-    with output_path.open("w", encoding="utf-8") as report:
-        report.write(f"# OPSEC Monthly Review\n\n")
-        report.write(f"**Generated:** {now}\n\n")
-        report.write("## Summary\n\n")
-        report.write(f"- Total unique root domains: **{len(counter)}**\n")
-        report.write(f"- Total DNS entries analyzed: **{len(domains)}**\n\n")
-
-        for category in ("core", "telemetry", "ads", "unknown"):
-            report.write(f"## {category.capitalize()} Domains\n\n")
-            if not classified[category]:
-                report.write("_None detected._\n\n")
-                continue
-
-            for domain, count in sorted(classified[category], key=lambda x: x[1], reverse=True):
-                report.write(f"- `{domain}` — {count} queries\n")
-            report.write("\n")
-
-        report.write("---\n")
-        report.write("🛡️ This report is generated locally for OPSEC review purposes.\n")
+    return analysis
 
 
 # -------------------------
-# Main
+# Reporting
 # -------------------------
+def generate_report(analysis, output_path):
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
+    def section(title, data, limit=20):
+        if not data:
+            return f"### {title}\n_No entries detected._\n\n"
+        lines = [f"- `{d}` → {c}" for d, c in sorted(data.items(), key=lambda x: x[1], reverse=True)[:limit]]
+        return f"### {title}\n" + "\n".join(lines) + "\n\n"
+
+    report = f"""# 🛡️ OPSEC DNS Review Report
+
+**Generated:** {now}
+
+## Summary
+- Total DNS queries: **{analysis['total_queries']}**
+- Unique domains: **{analysis['unique_domains']}**
+
+## 🔴 Denylist Hits (Telemetry / Ads)
+{section("Blocked / Should Be Blocked", analysis["denylist_hits"])}
+
+## 🟢 Baseline Domains (Expected & Safe)
+{section("Baseline Domains", analysis["baseline_hits"])}
+
+## 👻 Phantom TLD Activity
+{section("Suspicious TLDs", analysis["phantom_tld_hits"])}
+
+## ⚠️ Unknown / Review Required
+{section("Unclassified Domains", analysis["unknown_domains"], limit=30)}
+
+---
+
+### Analyst Notes
+- High denylist volume = good OPSEC enforcement
+- Phantom TLD hits should be investigated
+- Unknown domains may indicate new apps or updates
+
+"""
+    output_path.write_text(report)
+    print(f"[+] Report written to {output_path}")
+
+
+# -------------------------
+# Entry point
+# -------------------------
 def main():
     parser = argparse.ArgumentParser(description="OPSEC DNS Review Tool")
     parser.add_argument(
         "-i", "--input",
-        required=True,
-        help="Input file with DNS domains (one per line)"
+        nargs="+",
+        default=[DEFAULT_INPUT],
+        help="DNS query files (one per device or period)"
     )
     parser.add_argument(
         "-o", "--output",
-        default="../reports/opsec-review.md",
-        help="Output markdown report"
+        default=DEFAULT_REPORT,
+        help="Markdown report output"
     )
 
     args = parser.parse_args()
 
-    input_path = Path(args.input)
-    output_path = Path(args.output)
+    denylist = load_list(DENYLIST_FILE)
+    baseline_roots = load_list(BASELINE_ROOTS_FILE)
+    phantom_tlds = load_list(PHANTOM_TLDS_FILE)
 
-    if not input_path.exists():
-        print(f"[!] Input file not found: {input_path}")
-        sys.exit(1)
+    all_domains = []
 
-    domains = load_domains(input_path)
-    generate_report(domains, output_path)
+    for file in args.input:
+        path = Path(file)
+        if not path.exists():
+            print(f"[!] File not found: {path}")
+            continue
+        domains = [line.strip().lower() for line in path.read_text().splitlines() if line.strip()]
+        all_domains.extend(domains)
 
-    print(f"[+] OPSEC report generated: {output_path.resolve()}")
+    if not all_domains:
+        print("[!] No DNS data loaded. Exiting.")
+        return
+
+    analysis = analyze_domains(all_domains, denylist, baseline_roots, phantom_tlds)
+    generate_report(analysis, Path(args.output))
 
 
 if __name__ == "__main__":

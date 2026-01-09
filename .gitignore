@@ -1,7 +1,3 @@
-opsec/reports/*.md
-opsec/reports/*.md
-opsec/reports/*.md
-!opsec/reports/.gitkeep
 # ---------------------------
 # Python / Conda / Virtualenv
 # ---------------------------
@@ -9,3 +5,12 @@ opsec/reports/*.md
 .venv
 venv/
 __pycache__/
+
+# ---------------------------
+# OPSEC sensitive data
+# ---------------------------
+opsec/data/*
+opsec/reports/*
+
+# Keep directory structure
+!opsec/reports/.gitkeep
