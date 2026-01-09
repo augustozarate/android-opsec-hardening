@@ -56,30 +56,30 @@ This baseline is **not theoretical** — it is derived from real-world usage.
 These domains **must resolve** for system stability and core functionality.
 
 ### Core OS & APIs
-android.apis.google.com
-android.clients.google.com
-play.googleapis.com
-play-fe.googleapis.com
-www.googleapis.com
-connectivitycheck.gstatic.com
-time.android.com
+- `android.apis.google.com`
+- `android.clients.google.com`
+- `play.googleapis.com`
+- `play-fe.googleapis.com`
+- `www.googleapis.com`
+- `connectivitycheck.gstatic.com`
+- `time.android.com`
 
 ### Messaging
-g.whatsapp.net
-e*.whatsapp.net
-media-*.cdn.whatsapp.net
-static.whatsapp.net
-graph.whatsapp.com
+- `g.whatsapp.net`
+- `e*.whatsapp.net`
+- `media-*.cdn.whatsapp.net`
+- `static.whatsapp.net`
+- `graph.whatsapp.com`
 
 ### Browsing
-mozilla.org
-firefox.com
-detectportal.firefox.com
+- `mozilla.org`
+- `firefox.com`
+- `detectportal.firefox.com`
 
 ### Privacy Tools (Example tools)
-vpn-api.proton.me
-mail-api.proton.me
-pass-api.proton.me
+- `vpn-api.proton.me`
+- `mail-api.proton.me`
+- `pass-api.proton.me`
 
 ---
 
@@ -89,33 +89,33 @@ These domains generate **telemetry, analytics or tracking** and are intentionall
 Their presence in logs is **normal and desired**.
 
 ### Google Telemetry
-app-measurement.com
-firebaseinstallations.googleapis.com
-firebase-settings.crashlytics.com
-people-pa.googleapis.com
-playatoms-pa.googleapis.com
-voilatile-pa.googleapis.com
-footprints-pa.googleapis.com
+- `app-measurement.com`
+- `firebaseinstallations.googleapis.com`
+- `firebase-settings.crashlytics.com`
+- `people-pa.googleapis.com`
+- `playatoms-pa.googleapis.com`
+- `voilatile-pa.googleapis.com`
+- `footprints-pa.googleapis.com`
 
 ### Meta / Facebook Tracking
-connect.facebook.net
-analytics.facebook.com
-collector.facebook.com
-graph-fallback.facebook.com
-edge-mqtt.facebook.com
+- `connect.facebook.net`
+- `analytics.facebook.com`
+- `collector.facebook.com`
+- `graph-fallback.facebook.com`
+- `edge-mqtt.facebook.com`
 
 ### Browser Telemetry
-incoming.telemetry.mozilla.org
-telemetry.mozilla.org
-location.services.mozilla.com
+- `incoming.telemetry.mozilla.org`
+- `telemetry.mozilla.org`
+- `location.services.mozilla.com`
 
 ### Generic Advertising & Analytics
-doubleclick.net
-googleads.g.doubleclick.net
-adservice.google.com
-scorecardresearch.com
-branch.io
-adjust.com
+- `doubleclick.net`
+- `googleads.g.doubleclick.net`
+- `adservice.google.com`
+- `scorecardresearch.com`
+- `branch.io`
+- `adjust.com`
 
 ---
 
@@ -123,10 +123,10 @@ adjust.com
 
 The following root domains appear frequently and are considered normal:
 
-*.googleapis.com
-*.whatsapp.net
-*.fbcdn.net
-*.mozilla.com
+- `*.googleapis.com`
+- `*.whatsapp.net`
+- `*.fbcdn.net`
+- `*.mozilla.com`
 
 ---
 
@@ -135,17 +135,17 @@ The following root domains appear frequently and are considered normal:
 The following **must NOT appear** in baseline logs:
 
 ### Phantom / Abuse TLDs
-.xyz
-.top
-.gq
-.ml
-.cf
-.tk
-.click
-.link
-.download
-.loan
-.review
+- `.xyz`
+- `.top`
+- `.gq`
+- `.ml`
+- `.cf`
+- `.tk`
+- `.click`
+- `.link`
+- `.download`
+- `.loan`
+- `.review`
 
 Their presence indicates:
 - Ad SDK leakage
