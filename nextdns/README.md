@@ -19,7 +19,7 @@ The lists are **platform-agnostic** and can be applied to:
 ---
 
 ## 📂 Directory Structure
-
+```text
 nextdns/
 ├── allowlists/
 │ ├── allowlist-messaging.txt
@@ -32,7 +32,7 @@ nextdns/
 │ └── blocklist-samsung.txt
 │
 └── README.md
-
+```
 
 ---
 

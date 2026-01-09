@@ -41,7 +41,7 @@ The script is designed to:
 ## 📁 Required Directory Structure
 
 The script expects the following structure:
-
+```
 opsec/
 ├── data/
 │ └── dns_queries.txt # Raw DNS domains (one per line)
@@ -60,6 +60,7 @@ opsec/
 │
 ├── reports/
 │ └── .gitkeep # Reports are generated here (not versioned)
+```
 
 Resultado en GitHub
 

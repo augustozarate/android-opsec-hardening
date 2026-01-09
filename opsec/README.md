@@ -1,9 +1,5 @@
-
----
-
 # 📁 `opsec/README.md`
 
-```md
 # OPSEC – Automation & Baseline Strategy
 
 This directory defines the **OPSEC core logic** behind this repository.
@@ -37,6 +33,7 @@ opsec/
 │   └── .gitkeep
 │
 └── README.md
+```
 
 🧱 Baseline (baseline/)
 
