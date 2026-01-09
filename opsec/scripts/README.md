@@ -104,13 +104,13 @@ Example:
 
 If you export DNS logs from **NextDNS** as CSV:
 
-```bash
+
 cut -d',' -f2 nextdns-export.csv | tail -n +2 > opsec/data/dns_queries.txt
 
 Verify the result:
 - `head opsec/data/dns_queries.txt`
 
-🧪 Environment Setup (Recommended)
+## 🧪 Environment Setup (Recommended)
 
 Use an isolated Python environment.
 
@@ -123,12 +123,12 @@ Option B – Virtualenv
 - `source venv/bin/activate`
 No external dependencies are required.
 
-▶️ Running the Script
+## ▶️ Running the Script
 
 From the repository root:
 - `python opsec/scripts/opsec_review.py`
 
-📄 Output
+## 📄 Output
 
 The script generates a Markdown report:
 - `opsec/reports/opsec-report.md`
@@ -149,7 +149,7 @@ The report includes
 
 ⚠️ Reports are not committed to Git by design.
 
-🔁 Recommended Usage Cycle
+## 🔁 Recommended Usage Cycle
 
 - After major OS updates
 
@@ -159,7 +159,7 @@ The report includes
 
 - Compare reports over time (manually or externally)
 
-🛑 OPSEC Notes
+## 🛑 OPSEC Notes
 
 - Never commit raw DNS logs
 
@@ -169,7 +169,7 @@ The report includes
 
 - Review unexpected domains before allowing or blocking
 
-✅ Success Criteria
+## ✅ Success Criteria
 
 - A healthy baseline typically shows:
 
@@ -181,7 +181,7 @@ The report includes
 
 - No unexplained spikes or unknown TLDs
 
-🧠 Final Principle
+## 🧠 Final Principle
 
 Measure first. Block second. Document always.
 

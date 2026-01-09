@@ -35,7 +35,7 @@ opsec/
 └── README.md
 ```
 
-🧱 Baseline (baseline/)
+## 🧱 Baseline (baseline/)
 
 This folder defines the clean OPSEC baseline.
 
@@ -79,7 +79,7 @@ Used to evaluate the risk/value ratio of TLD-level blocking.
 
 Blocking a TLD should always be justified by metrics, not assumptions.
 
-⚙️ Automation (scripts/)
+## ⚙️ Automation (scripts/)
 - `opsec_review.py`
 
 Automation script intended to:
@@ -94,7 +94,7 @@ Automation script intended to:
 
 Designed to be executed periodically (monthly or quarterly).
 
-📊 Reports (reports/)
+## 📊 Reports (reports/)
 
 This directory stores generated outputs such as:
 
@@ -107,7 +107,7 @@ This directory stores generated outputs such as:
 Reports are intentionally excluded from version control by default
 to avoid leaking personal DNS data.
 
-🧠 OPSEC Philosophy
+## 🧠 OPSEC Philosophy
 
 This repository follows a baseline-first approach:
 
@@ -122,7 +122,7 @@ This repository follows a baseline-first approach:
 Absolute blocking is not OPSEC.
 Controlled reduction is.
 
-⚠️ Disclaimer
+## ⚠️ Disclaimer
 
 This project is intended for:
 
@@ -140,7 +140,7 @@ Do not use this tooling to:
 
 - Violate local regulations
 
-🔐 Final Note
+## 🔐 Final Note
 
 OPSEC is not static.
 Baselines must evolve as systems, apps, and threat models change.
