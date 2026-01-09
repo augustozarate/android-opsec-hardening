@@ -1,0 +1,11 @@
+opsec/reports/*.md
+opsec/reports/*.md
+opsec/reports/*.md
+!opsec/reports/.gitkeep
+# ---------------------------
+# Python / Conda / Virtualenv
+# ---------------------------
+.env
+.venv
+venv/
+__pycache__/
