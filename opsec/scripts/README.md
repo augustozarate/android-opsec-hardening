@@ -1,7 +1,6 @@
 # OPSEC Review Script – Usage Guide
 
-This document explains how to use the `opsec_review.py` script to analyze DNS activity
-and generate OPSEC-oriented reports in a safe and reproducible way.
+This document explains how to use the `opsec_review.py` script to analyze DNS activity and generate OPSEC-oriented reports in a safe, reproducible, and auditable way.
 
 ---
 
@@ -12,15 +11,37 @@ The script is designed to:
 - Analyze real DNS query logs
 - Classify domains by category (telemetry, ads, essential, unknown)
 - Detect noise, tracking-heavy roots, and phantom patterns
-- Generate a **human-readable OPSEC report**
-- Keep **raw data out of version control**
+- Generate a human-readable OPSEC report
+- Keep raw data out of version control
 
 ---
 
-## 📁 Directory Structure (Required)
+## 📁 Required Directory Structure
 
 The script expects the following structure:
-`
+
+# OPSEC Review Script – Usage Guide
+
+This document explains how to use the `opsec_review.py` script to analyze DNS activity and generate OPSEC-oriented reports in a safe, reproducible, and auditable way.
+
+---
+
+## 📌 Purpose
+
+The script is designed to:
+
+- Analyze real DNS query logs
+- Classify domains by category (telemetry, ads, essential, unknown)
+- Detect noise, tracking-heavy roots, and phantom patterns
+- Generate a human-readable OPSEC report
+- Keep raw data out of version control
+
+---
+
+## 📁 Required Directory Structure
+
+The script expects the following structure:
+
 opsec/
 ├── data/
 │ └── dns_queries.txt # Raw DNS domains (one per line)
@@ -30,40 +51,62 @@ opsec/
 │
 ├── reports/
 │ └── .gitkeep # Reports are generated here (not versioned)
-`
+opsec/
+├── data/
+│ └── dns_queries.txt # Raw DNS domains (one per line)
+│
+├── scripts/
+│ └── opsec_review.py # Analysis script
+│
+├── reports/
+│ └── .gitkeep # Reports are generated here (not versioned)
 
-⚠️ The `opsec/data/` and `opsec/reports/` directories are intentionally excluded from Git.
+Resultado en GitHub
+
+- Alineación perfecta
+
+- Tipografía monoespaciada
+
+- Lectura inmediata
+
+- Estándar profesional (README / docs técnicos)
+
+
+> ⚠️ `opsec/data/` and `opsec/reports/` are intentionally excluded from Git.
 
 ---
 
 ## 📥 Input Format
 
-The script requires a **plain text file**:
+The script requires a plain text file:
 
-**`opsec/data/dns_queries.txt`**
+- `opsec/data/dns_queries.txt`
 
-Format:
+
+### Format rules
+
+- One domain per line  
+- No headers  
+- No timestamps  
+- Duplicates are allowed (used for frequency analysis)
+
+Example:
+
 - `example.com`
 - `api.example.com`
 - `tracker.vendor.net`
 
 
-- One domain per line
-- No headers
-- No timestamps
-- Duplicates are allowed (used for frequency analysis)
-
 ---
 
 ## 🔄 Preparing the DNS Input
 
-If you export DNS logs from NextDNS as CSV:
+If you export DNS logs from **NextDNS** as CSV:
 
 ```bash
 cut -d',' -f2 nextdns-export.csv | tail -n +2 > opsec/data/dns_queries.txt
 
-Verify:
-
+Verify the result:
 - `head opsec/data/dns_queries.txt`
 
 🧪 Environment Setup (Recommended)
@@ -77,22 +120,19 @@ Option A – Conda
 Option B – Virtualenv
 - `python3 -m venv venv`
 - `source venv/bin/activate`
-
 No external dependencies are required.
 
 ▶️ Running the Script
 
 From the repository root:
-
 - `python opsec/scripts/opsec_review.py`
 
 📄 Output
 
 The script generates a Markdown report:
-
 - `opsec/reports/opsec-report.md`
 
-The report includes:
+The report includes
 
 - Execution timestamp (UTC)
 
@@ -110,11 +150,11 @@ The report includes:
 
 🔁 Recommended Usage Cycle
 
-- Run after major OS updates
+- After major OS updates
 
-- Run after installing new applications
+- After installing new applications
 
-- Run monthly as part of OPSEC hygiene
+- Monthly as part of OPSEC hygiene
 
 - Compare reports over time (manually or externally)
 
@@ -145,3 +185,6 @@ The report includes:
 Measure first. Block second. Document always.
 
 OPSEC is a process, not a static configuration.
+
+
+
