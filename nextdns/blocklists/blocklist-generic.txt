@@ -1,8 +1,0 @@
-# Telemetry and ads (example)
-userlocation.googleapis.com
-spot-pa.googleapis.com
-firebaseinstallations.googleapis.com
-graph.facebook.com
-edge-mqtt.facebook.com
-analytics.twitter.com
-googleads.g.doubleclick.net
