@@ -2,15 +2,36 @@
 # Python / Conda / Virtualenv
 # ---------------------------
 .env
-.venv
+.venv/
 venv/
 __pycache__/
+*.pyc
 
 # ---------------------------
 # OPSEC sensitive data
 # ---------------------------
-opsec/data/*
-opsec/reports/*
 
-# Keep directory structure
-!opsec/reports/.gitkeep
+# Raw DNS data (generated / sensitive)
+opsec/data/*
+!opsec/data/README.md
+
+# Generated reports (auto-generated)
+opsec/reports/*
+!opsec/reports/README.md
+
+# Logs (exports, captures, sensitive)
+logs/*
+!logs/README.md
+
+# ---------------------------
+# Optional hygiene
+# ---------------------------
+.vscode/
+*.swp
+*.tmp
+.DS_Store
+*.backup
+*.bak
+
+*~
+#*
