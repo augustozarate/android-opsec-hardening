@@ -1,0 +1,12 @@
+# --- High-risk / Abuse-heavy TLDs ---
+.xyz
+.top
+.gq
+.ml
+.cf
+.tk
+.click
+.link
+.download
+.loan
+.review
