@@ -1,23 +1,13 @@
-# OPSEC Documentation Index
+# Documentation
 
-This directory contains the full OPSEC documentation lifecycle, structured to
-support reproducibility, review, and continuous improvement.
+This directory contains guides and reference material related to the OPSEC project.
 
-## 01 – Baseline
-- Define the clean OPSEC baseline
-- Threat model and stability constraints
-- What must never be blocked
+## Structure
 
-## 02 – Implementation
-- DNS + VPN methodology
-- Device profiles and configurations
+- **guides/**
+  Step-by-step recommendations and configuration advice.
 
-## 03 – Measurement
-- DNS noise metrics
-- TLD blocking analysis
-- Before/after comparison
+- **references/**
+  Curated lists, blocklists, and external resources.
 
-## 04 – Follow-up
-- Periodic OPSEC reviews
-- Lessons learned
-- Adjustments over time
+If you're new, start with the configuration guide.
