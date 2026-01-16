@@ -19,7 +19,7 @@ The goal is to make OPSEC:
 
 ## 📂 Directory Structure
 
-```text
+```
 opsec/
 ├── baseline/
 │   ├── baseline-roots.txt

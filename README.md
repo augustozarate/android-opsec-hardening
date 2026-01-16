@@ -1,67 +1,116 @@
 # Android OPSEC Hardening (Hybrid DNS Model)
 
-This project documents a real-world OPSEC (Operational Security) hardening strategy
-applied to an Android device using DNS-level filtering (NextDNS) combined with a
-privacy-focused VPN.
+This project documents a **real-world Android OPSEC hardening framework**
+based on **DNS-level filtering (NextDNS)** combined with a
+**privacy-focused VPN**.
 
-The goal is to reduce telemetry, tracking, and DNS noise while preserving system
-stability, usability, and access to essential services — including major social
-platforms — through a hybrid and ethical approach.
+It combines **documentation, analysis tooling, and operational practices**
+to reduce telemetry, tracking, and unnecessary DNS noise while preserving
+system stability, usability, and access to essential services — including
+major social platforms.
+
+The approach is intentionally **hybrid, conservative, and ethical**.
 
 ---
 
-## Objectives
+## 📁 Project Structure
+
+```
+android-opsec-hardening/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── CHANGELOG.md
+
+├── opsec/
+│ ├── README.md
+│ ├── CHANGELOG.md
+│ │
+│ ├── scripts/
+│ │ ├── ingest/
+│ │ ├── analysis/
+│ │ ├── investigation/
+│ │ ├── maintenance/
+│ │ └── workflows/
+│ │
+│ ├── baseline/
+│ ├── data/ # tracked, data ignored
+│ └── reports/ # tracked, reports ignored
+│
+├── docs/
+│ ├── guides/
+│ └── references/
+│
+├── nextdns/
+│ ├── allowlists/
+│ └── blocklists/
+│
+├── logs/ # tracked, logs ignored
+└── screenshots/
+```
+---
+
+> All **automation, analysis, and OPSEC workflows** live under `opsec/`.
+
+---
+
+## 🎯 Objectives
 
 - Reduce unnecessary DNS queries and background telemetry
-- Limit exposure to advertising and analytics networks
+- Limit exposure to advertising, analytics, and tracking networks
 - Preserve core Android functionality and app usability
-- Maintain compatibility with VPN usage
-- Apply OPSEC principles without degrading user experience
+- Maintain compatibility with privacy-focused VPN usage
+- Apply OPSEC principles **without degrading daily user experience**
 
 ---
 
-## Scope and Threat Model
+## 🔍 Scope & Threat Model
 
-This project addresses:
+### In scope
 - Passive network observers
 - ISP-level metadata collection
 - Telemetry-heavy mobile applications
-- Tracking and analytics at the DNS level
-- Risks associated with public Wi-Fi networks
+- DNS-level tracking and analytics
+- Risks associated with public Wi-Fi usage
 
-Out of scope:
+### Out of scope
 - Device compromise or malware analysis
-- Root-level or firmware attacks
-- Exploitation or bypass techniques
+- Root-level, firmware, or baseband attacks
+- Exploitation, bypass, or evasion techniques
+
+This project focuses on **defensive hardening**, not adversarial activity.
 
 ---
 
-## Hybrid OPSEC Approach
+## 🔀 Hybrid OPSEC Model
 
-Rather than blocking entire platforms, this project follows a **hybrid model**:
+Rather than blocking entire platforms or ecosystems, this project follows a
+**selective hybrid strategy**:
 
-- Allow core APIs and content delivery networks (CDNs)
-- Selectively block telemetry, analytics, and advertising endpoints
-- Validate application functionality after each change
-- Iterate based on measurable DNS metrics
+- Allow core APIs, CDNs, and functional endpoints
+- Selectively block telemetry, analytics, and advertising domains
+- Validate application behavior after each change
+- Iterate based on **measurable DNS metrics**, not assumptions
 
-This approach reflects real-world constraints where usability and privacy must coexist.
+This reflects real-world constraints where **privacy and usability must coexist**.
 
 ---
 
-## Supported Use Cases
+## 👤 Supported Use Cases
 
 - Daily-use Android devices
 - Privacy-conscious users
-- Technical support and security professionals
+- Security and IT professionals
 - VPN users
-- Public Wi-Fi environments
+- Public or untrusted Wi-Fi environments
+
+This is **not** a lab-only or theoretical setup.
 
 ---
 
-## VPN Considerations (Ethical & Practical)
+## 🔐 VPN Considerations
 
-This project is VPN-agnostic but was designed to work correctly with
+The project is VPN-agnostic but designed and tested with
 privacy-respecting providers such as:
 
 - Mullvad
@@ -72,65 +121,51 @@ Key principles:
 - No traffic inspection
 - No user tracking
 - No logging policies
-- Proper DNS handling when combined with custom resolvers
+- Proper DNS handling with custom resolvers
 
-The use of a VPN in this project is intended solely for privacy and security purposes,
-not for bypassing laws, services, or usage restrictions.
-
----
-
-## Ethical Guidelines
-
-This project follows strict ethical boundaries:
-
-- No attempt to evade paywalls or services
-- No bypass of authentication or safeguards
-- No targeting of individuals or organizations
-- No data exfiltration or fingerprinting
-
-The focus is defensive security, privacy awareness, and system hardening.
+VPN usage is intended **solely for privacy and security**, not for bypassing
+laws, services, or platform restrictions.
 
 ---
 
-## Metrics and Validation
+## 📊 Metrics & Validation
 
-Effectiveness is measured through:
+Effectiveness is evaluated using:
+
 - DNS query volume comparison (before / after)
-- Reduction in telemetry-heavy domains
+- Reduction of telemetry-heavy domains
 - Functional testing of apps and system services
-- Stability under VPN and DNS coexistence
+- Stability when combining DNS filtering and VPN usage
 
 No personal data, identifiers, or raw logs are included in this repository.
 
 ---
 
-## Lessons Learned
+## 🧠 Lessons Learned
 
-- Over-blocking reduces usability and creates instability
-- Social platforms require selective filtering
-- VPN DNS behavior varies by provider
-- OPSEC is about balance, not isolation
+- Over-blocking causes instability and breaks usability
+- Major platforms require selective filtering
+- VPN DNS behavior varies significantly by provider
+- OPSEC is about **balance**, not isolation
 - Practical security favors consistency over extremism
 
 ---
 
-## Ethical Notice
+## ⚖️ Ethical & Legal Notice
 
-This project focuses on defensive security, privacy hardening, and OPSEC awareness.
-It does not promote:
-- Circumvention of laws
-- Bypassing device security mechanisms
-- Abuse of services or platforms
+This project is strictly defensive and educational.
 
-All configurations are reversible and documented.
+It does **not** promote:
+- Circumvention of laws or regulations
+- Bypassing device or platform safeguards
+- Abuse of services or targeting of organizations
 
-## Disclaimer
-
-This repository is provided for educational and defensive purposes only.
-Configuration examples are illustrative and should be adapted carefully to each
-environment.
+All configurations are documented, reversible, and intended for learning and
+personal hardening purposes.
 
 Users are responsible for complying with local laws, service terms, and ethical
 standards.
 
+---
 
+_Last updated: 2026-01-12 — Status: Stable_
