@@ -149,16 +149,6 @@ Characteristics:
 - Opinionated by design
 - Represent documented processes, not experiments
 - Intended to be auditable and reproducible
----
-Designed to be executed periodically (monthly or quarterly).
-
-⚠️ OPSEC Notes
-
-- Scripts do not directly enforce blocking
-- DNS logs and reports are handled outside version control
-- Outputs should always be reviewed before action
-
-Automation without understanding is not OPSEC.
 
 ## 📊 Reports (reports/)
 
@@ -208,9 +198,8 @@ Do not use this tooling to:
 
 ## 🔐 Final Note
 
-OPSEC is not static.
-Baselines must evolve as systems, apps, and threat models change.
-
-Automate review.
-Document decisions.
-Stay adaptable.
+- `OPSEC is not static.`
+- `Baselines must evolve as systems, apps, and threat models change.`
+- `Automate review.`
+- `Document decisions.`
+- `Stay adaptable.`
