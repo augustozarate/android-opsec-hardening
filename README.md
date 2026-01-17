@@ -21,7 +21,7 @@ android-opsec-hardening/
 ├── LICENSE
 ├── README.md
 ├── CHANGELOG.md
-
+|
 ├── opsec/
 │ ├── README.md
 │ ├── CHANGELOG.md
