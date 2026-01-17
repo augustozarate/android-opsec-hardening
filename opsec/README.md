@@ -27,7 +27,10 @@ opsec/
 │   └── phantom-tlds.txt
 │
 ├── scripts/
-│   └── opsec_review.py
+│   |── analysis/
+|   ├── investigation/
+|   ├── maintenance/
+|   └── workflows/
 │
 ├── reports/
 │   └── .gitkeep
@@ -80,19 +83,82 @@ Used to evaluate the risk/value ratio of TLD-level blocking.
 Blocking a TLD should always be justified by metrics, not assumptions.
 
 ## ⚙️ Automation (scripts/)
-- `opsec_review.py`
+🔍 - `analysis/`
 
-Automation script intended to:
+Scripts focused on measurement and visibility.
 
-- Analyze DNS logs
+Typical responsibilities:
 
-- Identify new domains
+- Analyze DNS datasets
+- Classify domains (allowed / denied / unknown)
+- Detect trends, ratios, and anomalies
+- Support decision-making with metrics
 
-- Measure blocked vs allowed ratios
+Characteristics:
 
-- Detect anomalies over time
+- Read-only over raw data
+- No blocking or enforcement actions
+- Designed for repeatable execution
+---
+🕵️ - `investigation/`
 
+Scripts used for manual or assisted investigation.
+
+Typical responsibilities:
+
+- Inspect suspicious domains
+- Enrich domains with external context
+- Correlate DNS activity with behavior patterns
+- Support false-positive / false-negative review
+
+Characteristics:
+
+- Often interactive or exploratory
+- May require analyst judgment
+- Used before modifying baselines or denylists
+---
+🧹 - `maintenance/`
+
+Scripts responsible for baseline hygiene and upkeep.
+
+Typical responsibilities:
+
+- Validate baseline consistency
+- Detect stale or unused entries
+- Normalize domain lists
+- Ensure format and structural integrity
+
+Characteristics:
+
+- Low-risk, controlled changes
+- Usually executed periodically
+- Focused on long-term stability
+---
+🔄 - `workflows/`
+
+Scripts that orchestrate multiple steps into a controlled process.
+
+Typical responsibilities:
+
+- End-to-end OPSEC review flows
+- Data → analysis → report pipelines
+- Coordinated execution of scripts from other folders
+
+Characteristics:
+
+- Opinionated by design
+- Represent documented processes, not experiments
+- Intended to be auditable and reproducible
+---
 Designed to be executed periodically (monthly or quarterly).
+
+⚠️ OPSEC Notes
+
+- Scripts do not directly enforce blocking
+- DNS logs and reports are handled outside version control
+- Outputs should always be reviewed before action
+
+Automation without understanding is not OPSEC.
 
 ## 📊 Reports (reports/)
 
