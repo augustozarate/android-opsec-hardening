@@ -35,7 +35,8 @@ From the project root, run the following command:
 cut -d',' -f2 logs/nextdns-export.csv | tail -n +2 > opsec/data/dns_queries.txt
 ```
 Note: If your CSV uses `;` instead of `,`, adjust the command accordingly:
-```cut -d';' -f2 logs/nextdns-export.csv | tail -n +2 > opsec/data/dns_queries.txt
+```
+cut -d';' -f2 logs/nextdns-export.csv | tail -n +2 > opsec/data/dns_queries.txt
 ```
 What does this command do?
 
