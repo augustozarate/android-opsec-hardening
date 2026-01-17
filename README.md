@@ -27,7 +27,6 @@ android-opsec-hardening/
 │ ├── CHANGELOG.md
 │ │
 │ ├── scripts/
-│ │ ├── ingest/
 │ │ ├── analysis/
 │ │ ├── investigation/
 │ │ ├── maintenance/
