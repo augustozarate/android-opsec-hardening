@@ -1,22 +1,116 @@
 # Android OPSEC Hardening
 
 **Repository:** `android-opsec-hardening`  
-**Purpose:** Practical security hardening guides for Android devices with real-world testing and documentation  
-**Focus:** Privacy-first configurations, rootless approaches, and threat model analysis  
+**Purpose:** Practical Android security hardening with real-world case studies, DNS filtering (NextDNS), and privacy-focused VPN integration  
+**Focus:** Privacy-first configurations, rootless approaches, threat model analysis, and hybrid OPSEC strategy  
 
 ---
 
 ## Overview
 
-This repository documents hands-on Android security hardening experiments and case studies. Each guide represents real-world testing on specific devices, focusing on **practical privacy improvements** without requiring root access or complex modifications.
+This repository documents **hands-on Android security hardening** experiments and **real-world case studies**. Each guide represents actual device testing, focusing on **practical privacy improvements** without requiring root access or complex modifications.
+
+The core philosophy combines:
+- **DNS-level filtering (NextDNS)** for passive threat defense
+- **Privacy-respecting VPN usage** (Mullvad, IVPN, Proton VPN)
+- **Selective hardening** (balance privacy with usability)
+- **Documented lessons learned** (both successes and failures)
 
 ### Core Philosophy
 
-- ✅ **Documented & Tested** — Every guide reflects actual device testing
+- ✅ **Documented & Tested** — Every guide reflects actual device testing (2+ weeks minimum)
+- ✅ **Hybrid OPSEC Model** — DNS filtering + VPN without breaking app functionality
 - ✅ **Realistic Threat Models** — Focused on common privacy concerns, not theoretical attacks
 - ✅ **Rootless-First** — Prioritize OS-level controls over kernel-level modifications
 - ✅ **Reproducible** — Step-by-step guides for others to follow
-- ✅ **Lessons Learned** — Document failures and why they occurred
+- ✅ **Ethical & Transparent** — No circumvention, no platform abuse, just privacy
+
+---
+
+## 🎯 Objectives
+
+- Reduce unnecessary DNS queries and background telemetry
+- Limit exposure to advertising, analytics, and tracking networks
+- Preserve core Android functionality and app usability
+- Maintain compatibility with privacy-focused VPN usage
+- Apply OPSEC principles **without degrading daily user experience**
+
+---
+
+## 📁 Project Structure
+
+```
+android-opsec-hardening/
+├── .gitignore
+├── LICENSE
+├── README.md                          # This file
+├── CHANGELOG.md
+│
+├── devices/                           # Device-specific case studies
+│   └── samsung-a50-a505g/
+│       ├── README.md                  # Full A50 hardening guide
+│       ├── troubleshooting.md         # Known issues & solutions
+│       └── configs/
+│           ├── nextdns-setup.txt
+│           └── shelter-apps-list.txt
+│
+├── opsec/                             # OPSEC automation & analysis
+│   ├── README.md
+│   ├── CHANGELOG.md
+│   ├── baseline/                      # DNS baseline & threat analysis
+│   ├── scripts/                       # Analysis & maintenance tools
+│   │   ├── analysis/
+│   │   ├── investigation/
+│   │   ├── maintenance/
+│   │   └── workflows/
+│   └── data/                          # (git tracked, data ignored)
+│
+├── docs/                              # General documentation
+│   ├── guides/
+│   └── references/
+│
+├── nextdns/                           # NextDNS blocklists & allowlists
+│   ├── blocklists/                    # Google, Meta, Samsung trackers
+│   └── allowlists/                    # Functional endpoints
+│
+├── logs/                              # (git tracked, logs ignored)
+└── screenshots/
+```
+
+---
+
+## 🔍 Threat Model & Scope
+
+### In Scope
+- Passive network observers (ISPs, networks)
+- DNS-level tracking and analytics
+- Telemetry-heavy mobile applications
+- Advertising and tracking networks
+- Risks associated with public Wi-Fi usage
+- Google/Meta/OEM telemetry collection
+
+### Out of Scope
+- Device compromise or malware analysis
+- Root-level, firmware, or baseband attacks
+- Exploitation, bypass, or evasion techniques
+- Nation-state adversaries
+- Physical device access
+
+**This project focuses on defensive hardening, not adversarial activity.**
+
+---
+
+## 🔀 Hybrid OPSEC Model
+
+Rather than blocking entire platforms or ecosystems, this project follows a **selective hybrid strategy**:
+
+- ✅ Allow core APIs, CDNs, and functional endpoints
+- ✅ Selectively block telemetry, analytics, and advertising domains
+- ✅ Validate application behavior after each configuration change
+- ✅ Iterate based on **measurable DNS metrics**, not assumptions
+- ✅ Preserve usability while reducing tracking exposure
+
+**Privacy and usability must coexist.**
 
 ---
 
@@ -30,25 +124,25 @@ Pick a device matching yours:
   - Android 12.1 (crDroid 9.5)
   - GrapheneOS-like privacy stack
   - App sandboxing via Shelter
-  - Status: ✅ Stable & Daily-Use Tested
+  - Hybrid DNS + VPN configuration
+  - Status: ✅ Stable & Daily-Use Tested (2+ weeks)
 
 ### For Developers/Researchers
 
-Review the [Architecture](#architecture) section and contribute additional device guides.
+Review the [Architecture](#architecture) section and [Contributing](#contributing) guidelines to add additional device cases.
 
 ---
 
 ## Architecture
 
-### Devices Directory
+### Device Case Studies
 
-Each device has its own subdirectory with:
+Each device subdirectory follows this template:
 
 ```
 devices/[manufacturer]-[model]-[variant]/
-├── README.md                    # Main setup guide
-├── setup-guide.md               # Step-by-step installation
-├── troubleshooting.md           # Common issues & solutions
+├── README.md                    # Complete setup guide
+├── troubleshooting.md           # Known issues & solutions
 ├── lessons-learned.md           # What worked/failed & why
 ├── performance-metrics.md       # Real-world performance data
 └── configs/
@@ -58,23 +152,17 @@ devices/[manufacturer]-[model]-[variant]/
     └── firewall-rules.md (if applicable)
 ```
 
-### Tools Directory (Optional)
+### OPSEC Automation & Analysis
 
-Scripts and utilities for automation:
+Scripts and tools under `opsec/`:
 
 ```
-tools/
-├── install-fdroid.sh            # F-Droid installation automation
-├── apply-hardening.sh           # Batch permission hardening
-└── device-fingerprint.sh        # Privacy audit tool
+opsec/scripts/
+├── analysis/                    # DNS review, threat analysis
+├── investigation/               # Domain investigation tools
+├── maintenance/                 # Updater & cleanup tools
+└── workflows/                   # Integrated OPSEC workflows
 ```
-
-### Documentation Standards
-
-- **README.md** — Main guide (installation → hardening → verification)
-- **Troubleshooting.md** — Error solutions, device-specific quirks
-- **Lessons Learned.md** — What failed, root causes, workarounds
-- **Configs/** — Copy-paste friendly configuration files
 
 ---
 
@@ -84,49 +172,69 @@ tools/
 
 **Status:** ✅ Active, Daily Use  
 **Android Version:** 12.1 (crDroid 9.5)  
+**Duration Tested:** 2+ weeks (ongoing)  
 **Bootloader:** Unlocked, Knox Fused  
-**Root:** None (intentional — see below)
+**Root:** None (intentional)
 
 **Key Achievements:**
 - Removed all Google Services (microG replacement)
 - App sandboxing via Shelter work profiles
-- DNS filtering (NextDNS) + VPN (Mullvad)
-- Stable WiFi after kernel troubleshooting
-- No root required
+- DNS filtering (NextDNS) + VPN (Mullvad always-on)
+- Stable WiFi after comprehensive kernel troubleshooting
+- No root required — OS-level controls sufficient
 
 **Why No Root?**
 - Magisk incompatible with A50 ramdisk architecture
 - KernelSU requires GKI kernels (device uses custom Bocchi kernel)
 - Root installation caused bootloop on multiple kernel attempts
 - OS-level controls (work profiles, permissions) sufficient for privacy goals
+- Rootless = more stable long-term
 
-**Read Full Guide:** [devices/samsung-a50-a505g/README.md](./devices/samsung-a50-a505g/)
+**Key Lesson:** Root isn't always necessary for privacy. Deliberate OS-level controls + DNS filtering + VPN can achieve comparable privacy without stability risks.
+
+**[Read Full Guide →](./devices/samsung-a50-a505g/README.md)**
 
 ---
 
-## Privacy Stack Components
-
-Each guide typically implements:
+## 🔐 Privacy Stack Components
 
 ### Application Level
 - **F-Droid** — FOSS app store (no Google Play required)
 - **microG** — Lightweight Google Services replacement
 - **Shelter** — App sandboxing via work profiles
-- **Mullvad VPN** — Always-on, no-logs VPN
+- **Mullvad VPN** — Always-on, no-logs VPN (configurable)
 
 ### Network Level
 - **NextDNS** — DNS-level ad/tracker blocking
 - **DNS-over-HTTPS** — Encrypted DNS queries
-- **VPN Split-tunneling** (if configured)
+- **VPN Integration** — Privacy-respecting providers (Mullvad, IVPN, Proton)
+- **Split-tunneling** (optional, context-dependent)
 
 ### System Level
 - **Permission Hardening** — Granular per-app controls
-- **Telemetry Disabling** — Samsung/OEM tracking removal
-- **Bootloader Lock Status** — Security implications documented
+- **Telemetry Disabling** — Samsung/Google/OEM tracking removal
+- **SELinux** — Mandatory Access Control (system-wide)
 
 ### Hardware Level
-- **SELinux** — Mandatory Access Control (system-wide)
 - **Verified Boot** — Bootloader & system partition integrity
+- **Bootloader Status** — Security implications documented
+
+---
+
+## VPN Considerations
+
+The project is **VPN-agnostic** but designed and tested with privacy-respecting providers:
+
+- **Mullvad** (recommended for A50 guide)
+- **IVPN**
+- **Proton VPN**
+
+### Key Principles
+- No traffic inspection
+- No user tracking
+- No logging policies
+- Proper DNS handling with custom resolvers
+- VPN usage for **privacy and security only**, not circumvention
 
 ---
 
@@ -136,14 +244,14 @@ Each guide typically implements:
 
 1. Create folder: `devices/[manufacturer]-[model]-[variant]/`
 2. Use template from existing guide (A50)
-3. Test on actual hardware (minimum 2-4 weeks daily use)
+3. **Test on actual hardware (minimum 2-4 weeks daily use)**
 4. Document failures, not just successes
 5. Submit PR with device specs in commit message
 
 ### Submission Checklist
 
 - [ ] Device model & variant (e.g., SM-A505G)
-- [ ] Android version & ROM
+- [ ] Android version & ROM used
 - [ ] Installation steps (bootloader unlock → final setup)
 - [ ] Privacy stack components tested
 - [ ] Performance impact measured
@@ -161,48 +269,51 @@ docs: add [device] [rom] [android-version] hardening guide
 - Android: 12.1
 - Duration tested: 2+ weeks daily use
 - Key achievement: X privacy goal achieved without root
+- Hybrid OPSEC: NextDNS + Mullvad VPN
 ```
 
 ---
 
 ## Security Considerations
 
-### Threat Model
-
-These guides assume you're protecting against:
+### What This Protects Against
 - ✅ ISP/network-level tracking (VPN)
-- ✅ Google tracking (F-Droid + microG)
+- ✅ Google/Meta/Samsung tracking (F-Droid + microG + DNS blocking)
 - ✅ App data leaks (Shelter sandboxing)
-- ✅ DNS leaks (NextDNS)
-- ✅ Telemetry (OEM/Samsung removal)
+- ✅ DNS leaks (NextDNS + VPN)
+- ✅ Telemetry & analytics collection
+- ✅ Public Wi-Fi eavesdropping (VPN)
 
-These guides do **NOT** protect against:
+### What This Does NOT Protect Against
 - ❌ Nation-state adversaries
-- ❌ Physical device access
+- ❌ Physical device access or theft
 - ❌ Supply-chain compromises
 - ❌ Zero-day exploits
-- ❌ Compromised apps (use Shelter for untrusted apps)
+- ❌ Compromised apps (even in sandbox)
+- ❌ Malware or device compromise
 
 ### Limitations
 
-- No kernel-level hardening (requires custom kernel)
+- No kernel-level hardening (requires custom kernel with GKI)
 - No exploit prevention beyond standard SELinux
-- Bootloader unlock reduces security (Knox fused)
+- Bootloader unlock reduces security baseline (Knox fused)
 - microG cannot replace all Play Services features
+- DNS filtering is not encryption (use with VPN)
 
 ### Best Practices
 
 1. **Shelter untrusted apps** — Use work profiles for questionable apps
 2. **Enable VPN always-on** — Prevent traffic leaks if VPN disconnects
 3. **Review permissions** — Even F-Droid apps should be permission-audited
-4. **Update regularly** — crDroid/LineageOS security patches
+4. **Update regularly** — crDroid/LineageOS security patches critical
 5. **Backup data** — Before flashing ROMs or kernels
+6. **Monitor DNS queries** — Use NextDNS dashboard to validate filtering
 
 ---
 
 ## Performance Baseline
 
-### Typical Metrics (A50 + crDroid 9.5)
+### Typical Metrics (A50 + crDroid 9.5 + NextDNS + Mullvad)
 
 | Metric | Value | Notes |
 |---|---|---|
@@ -212,6 +323,41 @@ These guides do **NOT** protect against:
 | RAM Usage | 2.8GB / 4GB | Shelter adds ~50MB per sandboxed app |
 | Storage Impact | ~2GB | microG + F-Droid + apps |
 | VPN Overhead | <5% | Negligible for browsing |
+| DNS Query Reduction | 70%+ | With NextDNS filtering |
+
+---
+
+## 🧠 Lessons Learned
+
+### What Worked
+- ✅ **crDroid 9.5** — 100% stable, optimized AOSP
+- ✅ **Shelter for isolation** — Works without root via work profiles
+- ✅ **F-Droid + microG** — Zero Google dependencies, minimal friction
+- ✅ **Rootless approach** — Avoids bootloop risks, long-term stability
+- ✅ **NextDNS + VPN** — Effective hybrid model with usability intact
+
+### What Didn't Work
+- ❌ **Magisk on A50** — Incompatible ramdisk architecture
+- ❌ **KernelSU with Bocchi kernel** — Requires GKI, got "Not supported" error
+- ❌ **Mint kernels with Android 13** — WiFi driver crash loops on A505G
+- ❌ **LineageOS 20** — Bootloader/kernel compatibility issues on this device
+
+### Key Insight
+**Stability over features.** A proven, stable setup (Android 12 + Bocchi kernel + crDroid) is worth more than newer versions (Android 13+) that introduce instability. Privacy achieved through **reliability**, not bleeding-edge technology.
+
+---
+
+## 📊 Metrics & Validation
+
+Effectiveness is evaluated using:
+
+- DNS query volume comparison (before / after configuration)
+- Reduction of telemetry-heavy domains (NextDNS logs)
+- Functional testing of apps and system services
+- Stability when combining DNS filtering and VPN usage
+- Battery life and performance impact measurement
+
+**No personal data, identifiers, or raw logs are included in this repository.**
 
 ---
 
@@ -227,36 +373,51 @@ These guides do **NOT** protect against:
 
 ### Privacy & Security Research
 - **GrapheneOS Security Model:** https://grapheneos.org/features
-- **Android Hardening by @MalibuSecurity:** Kernel-level approaches
+- **Android Hardening Documentation:** https://source.android.com/docs/security
 - **EFF Privacy Guide:** https://ssd.eff.org
 
 ### Technical Documentation
 - **Android Verified Boot:** https://source.android.com/docs/security/verifiedboot
 - **SELinux on Android:** https://source.android.com/docs/security/selinux
-- **Exynos 9610 Kernel:** Custom ROM development resources
+- **DNS Security (RFC 8310):** DNS over HTTPS standards
 
 ---
 
-## Frequently Asked Questions
+## FAQ
 
 ### Q: Why not use GrapheneOS?
-**A:** GrapheneOS doesn't support older devices like the A50. This project documents how to achieve similar privacy goals on unsupported hardware.
+**A:** GrapheneOS doesn't support older devices like the A50. This project documents how to achieve **comparable privacy goals** on unsupported hardware using FOSS alternatives.
 
 ### Q: Is root required?
 **A:** No. Rootless approach is intentional — OS-level controls (work profiles, permissions) are sufficient for privacy. Root adds complexity and stability risks on older devices.
 
-### Q: Can I add this to my device?
-**A:** If your device has an existing custom ROM guide, yes. Test thoroughly for 2+ weeks. Document failures, not just successes.
+### Q: What if my device isn't listed?
+**A:** Contribute a case study! Follow the [Contributing](#contributing) guidelines. Test on actual hardware for 2+ weeks and document both successes and failures.
 
 ### Q: Does this replace antivirus?
-**A:** No. These are privacy hardening guides, not security hardening. Assume app-level malware is possible; use Shelter to sandbox untrusted apps.
+**A:** No. These are privacy hardening guides, not malware protection. Assume app-level malware is possible; use Shelter to sandbox untrusted apps.
 
 ### Q: Can I contribute improvements?
 **A:** Yes! Submit PRs with:
-- Real-world testing results
+- Real-world testing results (2+ weeks minimum)
 - Device specs & ROM version
 - Documented failures (learning experiences)
 - Performance metrics
+
+---
+
+## ⚖️ Ethical & Legal Notice
+
+This project is **strictly defensive and educational**.
+
+It does **NOT** promote:
+- Circumvention of laws or regulations
+- Bypassing device or platform safeguards
+- Abuse of services or targeting of organizations
+
+All configurations are **documented, reversible, and intended for learning and personal hardening** purposes.
+
+**Users are responsible for** complying with local laws, service terms, and ethical standards.
 
 ---
 
@@ -267,6 +428,8 @@ This repository is provided for **educational and research purposes**. Use at yo
 - ROM installation voids warranty
 - Bootloader unlock can brick devices
 - Privacy is not guaranteed; these measures reduce (not eliminate) tracking
+
+See [LICENSE](./LICENSE) file for details.
 
 ---
 
@@ -289,4 +452,6 @@ This repository is provided for **educational and research purposes**. Use at yo
 
 **Last Updated:** June 2026  
 **Maintainer:** [@augustozarate](https://github.com/augustozarate)  
-**Portfolio:** [Cybersecurity & Privacy Engineering](/)
+**Portfolio:** [Cybersecurity & Privacy Engineering](https://github.com/augustozarate)
+
+⭐ If you find this project useful, please give it a star on GitHub!
