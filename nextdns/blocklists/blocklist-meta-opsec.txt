@@ -1,0 +1,15 @@
+edge-mqtt.facebook.com
+b-graph.facebook.com
+graph-fallback.facebook.com
+graph.facebook.com
+connect.facebook.net
+mqtt-mini.facebook.com
+z-m-gateway.facebook.com
+analytics.facebook.com
+collector.facebook.com
+secure.adnxs.com
+ads.msn.com
+cdninstagram.com
+graph.instagram.com
+scontent.cdninstagram.com
+test-gateway.instagram.com

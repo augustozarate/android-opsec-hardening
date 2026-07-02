@@ -1,0 +1,14 @@
+# ---------------------------
+# Core dependencies (required)
+# ---------------------------
+
+requests>=2.31
+dnspython>=2.4
+python-whois>=0.8
+pandas>=2.1
+numpy>=1.26
+
+# ---------------------------
+# Optional / future analysis
+# ---------------------------
+# matplotlib>=3.8

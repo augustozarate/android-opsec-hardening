@@ -1,0 +1,23 @@
+# Services that may break functionality if blocked
+# Consider allowlisting these if you need the functionality
+
+# Google Cloud Messaging (notifications)
+mtalk.google.com
+
+# Meta real-time messaging
+edge-mqtt.facebook.com
+z-m-gateway.facebook.com
+
+# Facebook messaging features
+chat-e2ee-mini.facebook.com
+payments-graph.facebook.com
+b-graph.facebook.com
+
+# Instagram features
+test-gateway.instagram.com
+payments-graph.instagram.com
+
+# Some Google Play Services that might affect functionality
+# Note: These are already in baseline, but worth noting
+android.clients.google.com
+play.googleapis.com

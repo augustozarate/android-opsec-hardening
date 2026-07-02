@@ -1,0 +1,17 @@
+connectivitycheck.gstatic.com
+time.android.com
+www.googleapis.com
+android.clients.google.com
+android.apis.google.com
+play-fe.googleapis.com
+fonts.gstatic.com
+*.fonts.googleapis.com
+*.cdnjs.cloudflare.com
+*.cloudflare.com
+*.gstatic.com
+i.ytimg.com
+youtubei.googleapis.com
+googlevideo.com
+*.googlevideo.com
+*.fbcdn.net
+scontent.cdninstagram.com
