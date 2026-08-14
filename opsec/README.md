@@ -26,6 +26,10 @@ opsec/
 │   ├── denylist.txt
 │   └── phantom-tlds.txt
 │
+├── case-studies/
+│   ├── assets/
+│   └── 2026-08-phishing-contabo-roundcube.md
+│
 ├── scripts/
 │   └── opsec_review.py
 │
@@ -106,6 +110,14 @@ This directory stores generated outputs such as:
 
 Reports are intentionally excluded from version control by default
 to avoid leaking personal DNS data.
+
+## 🔎 Case Studies (case-studies/)
+
+Real-world findings produced by applying this repository's OPSEC methodology — domain investigation, DNS pattern analysis, and detection cross-verification — to threats encountered in the wild.
+
+Each entry documents the indicator of compromise, cross-verification across multiple detection sources, OSINT correlation, and the responsible disclosure process followed when applicable.
+
+Unlike `reports/`, this directory *is* version-controlled — findings here are anonymized and IoCs are defanged before publication, so there's no personal DNS data to leak.
 
 ## 🧠 OPSEC Philosophy
 

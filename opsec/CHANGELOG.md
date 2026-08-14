@@ -4,6 +4,21 @@
 
 
 
+## 2026-08-14 UTC — Case Study Added
+
+### 📁 New Content
+
+- Added `case-studies/` directory
+- Added `case-studies/2026-08-phishing-contabo-roundcube.md`: real-world
+  phishing detection false negative, cross-verified across VirusTotal,
+  ANY.RUN, and Nord Security's Link Checker. Reported to vendor via
+  responsible disclosure — status pending.
+
+### 📝 Notes
+- IoCs documented in defanged format; no personal DNS data included
+- To be updated once vendor response is received
+
+---
 ## 2026-01-14 14:12 UTC - Manual Domain Update
 
 ### ✅ Domains Added
