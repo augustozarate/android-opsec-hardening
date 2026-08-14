@@ -58,6 +58,8 @@ android-opsec-hardening/
 │   ├── README.md
 │   ├── CHANGELOG.md
 │   ├── baseline/                      # DNS baseline & threat analysis
+│   ├── case-studies/                  # Real-world threat findings
+│   │   └── assets/
 │   ├── scripts/                       # Analysis & maintenance tools
 │   │   ├── analysis/
 │   │   ├── investigation/
@@ -165,8 +167,20 @@ opsec/scripts/
 ```
 
 ---
+### OPSEC Case Studies
+
+Real-world findings produced by applying this repo's investigation tooling (`opsec/scripts/investigation/`) and detection methodology to threats encountered in the wild — not simulated scenarios.
+```
+opsec/case-studies/
+├── README.md
+└── YYYY-MM-short-description.md
+```
+Each entry cross-verifies detection across multiple sources (VirusTotal, sandbox history, vendor tools) and documents the responsible disclosure process when a vendor is contacted. See [`opsec/case-studies/`](./opsec/case-studies/).
+---
 
 ## Case Studies
+
+This project maintains two kinds of case studies: **device hardening guides** (below) and **OPSEC investigation findings** ([`opsec/case-studies/`](./opsec/case-studies/)) — real threats analyzed using this repo's own methodology.
 
 ### Samsung Galaxy A50 (SM-A505G)
 
@@ -193,6 +207,17 @@ opsec/scripts/
 **Key Lesson:** Root isn't always necessary for privacy. Deliberate OS-level controls + DNS filtering + VPN can achieve comparable privacy without stability risks.
 
 **[Read Full Guide →](./devices/samsung-a50-a505g/README.md)**
+
+---
+
+### Detection False Negative: Compromised Contabo VPS Serving Phishing
+
+**Status:** 🟡 Pending vendor response
+**Type:** Threat investigation (not device hardening)
+
+A phishing email was cross-verified across VirusTotal, ANY.RUN sandbox history, and a VPN vendor's URL reputation tool — revealing a detection gap where the vendor's own checker classified a known-bad URL as clean. Documents the full OSINT correlation process and responsible disclosure to the vendor.
+
+**[Read Full Case Study →](./opsec/case-studies/2026-08-phishing-contabo-roundcube.md)**
 
 ---
 
@@ -435,10 +460,18 @@ See [LICENSE](./LICENSE) file for details.
 
 ## Status & Maintenance
 
+### Device Guides
+
 | Device | ROM | Android | Status | Last Tested |
 |---|---|---|---|---|
 | Samsung A50 (SM-A505G) | crDroid 9.5 | 12.1 | ✅ Stable | June 2026 |
 | (More devices coming) | — | — | 🚧 Planned | — |
+
+### OPSEC Case Studies
+
+| Case Study | Type | Status | Last Updated |
+|---|---|---|---|
+| [Contabo/Roundcube Phishing — Detection False Negative](./opsec/case-studies/2026-08-phishing-contabo-roundcube.md) | Threat investigation | 🟡 Pending vendor response | August 2026 |
 
 ---
 
@@ -450,7 +483,7 @@ See [LICENSE](./LICENSE) file for details.
 
 ---
 
-**Last Updated:** June 2026  
+**Last Updated:** August 2026  
 **Maintainer:** [@augustozarate](https://github.com/augustozarate)  
 **Portfolio:** [Cybersecurity & Privacy Engineering](https://github.com/augustozarate)
 
