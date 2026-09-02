@@ -1,490 +1,849 @@
 # Android OPSEC Hardening
 
-**Repository:** `android-opsec-hardening`  
-**Purpose:** Practical Android security hardening with real-world case studies, DNS filtering (NextDNS), and privacy-focused VPN integration  
-**Focus:** Privacy-first configurations, rootless approaches, threat model analysis, and hybrid OPSEC strategy  
+**Practical Android privacy, network hardening, validation, and OPSEC research.**
+
+Android OPSEC Hardening is an evidence-oriented project for designing, testing, and documenting privacy and network-security configurations on real Android devices.
+
+The project combines:
+
+- RethinkDNS network control
+- Encrypted DNS
+- DNS filtering
+- WireGuard routing
+- Application-level firewall policies
+- Application isolation
+- Network observability
+- OPSEC analysis and automation
+- Real-world security investigations
+
+The objective is not to create a single "perfect" Android configuration.
+
+The objective is to build a **reproducible security engineering reference** that documents:
+
+```
+What is configured
+        ↓
+Why it is configured
+        ↓
+How it is tested
+        ↓
+What was observed
+        ↓
+Where it may fail
+```
 
 ---
 
-## Overview
+## Core Philosophy
 
-This repository documents **hands-on Android security hardening** experiments and **real-world case studies**. Each guide represents actual device testing, focusing on **practical privacy improvements** without requiring root access or complex modifications.
+The project follows several principles:
 
-The core philosophy combines:
-- **DNS-level filtering (NextDNS)** for passive threat defense
-- **Privacy-respecting VPN usage** (Mullvad, IVPN, Proton VPN)
-- **Selective hardening** (balance privacy with usability)
-- **Documented lessons learned** (both successes and failures)
+- **Evidence over assumptions**
+- **Reproducibility over personal preference**
+- **Defense in depth**
+- **Validation before recommendation**
+- **Explicit documentation of limitations**
+- **Privacy without unnecessarily breaking usability**
+- **Rootless-first when practical**
+- **Version-aware testing**
 
-### Core Philosophy
+A central rule of the project is:
 
-- ✅ **Documented & Tested** — Every guide reflects actual device testing (2+ weeks minimum)
-- ✅ **Hybrid OPSEC Model** — DNS filtering + VPN without breaking app functionality
-- ✅ **Realistic Threat Models** — Focused on common privacy concerns, not theoretical attacks
-- ✅ **Rootless-First** — Prioritize OS-level controls over kernel-level modifications
-- ✅ **Reproducible** — Step-by-step guides for others to follow
-- ✅ **Ethical & Transparent** — No circumvention, no platform abuse, just privacy
+```
+Configured
+    !=
+Validated
+```
 
----
+A security feature is not considered validated simply because it is enabled or appears to work.
 
-## 🎯 Objectives
-
-- Reduce unnecessary DNS queries and background telemetry
-- Limit exposure to advertising, analytics, and tracking networks
-- Preserve core Android functionality and app usability
-- Maintain compatibility with privacy-focused VPN usage
-- Apply OPSEC principles **without degrading daily user experience**
+Where practical, expected behavior is verified through controlled testing, logs, network observations, external verification, and supporting evidence.
 
 ---
 
-## 📁 Project Structure
+## Objectives
+
+The project aims to:
+
+- Reduce unnecessary telemetry and tracking.
+- Control application network access.
+- Encrypt DNS resolution.
+- Validate DNS resolver behavior.
+- Route selected applications through privacy-oriented VPN tunnels.
+- Apply per-application firewall and routing policies.
+- Investigate unexpected network activity.
+- Preserve Android usability while improving privacy.
+- Document successful and unsuccessful configurations.
+- Detect regressions introduced by software upgrades.
+- Build reproducible OPSEC workflows and analysis tools.
+
+---
+
+# Project Architecture
+
+The project follows a layered model.
+
+```
+                    Android Device
+                         |
+                         v
+                  Applications
+                         |
+              +----------+----------+
+              |                     |
+              v                     v
+       Application             Work Profile /
+       Permissions              Isolation
+              |                     |
+              +----------+----------+
+                         |
+                         v
+                    RethinkDNS
+                         |
+             +-----------+-----------+
+             |           |           |
+             v           v           v
+          Firewall      DNS       WireGuard
+                         |           |
+                         v           v
+                 Encrypted DNS      VPN
+                 Provider(s)      Routing
+                         \           /
+                          \         /
+                           v       v
+                            Internet
+```
+
+Additional OPSEC tooling analyzes DNS activity, domains, security events, and real-world incidents outside the device itself.
+
+---
+
+# Repository Structure
 
 ```
 android-opsec-hardening/
-├── .gitignore
-├── LICENSE
-├── README.md                          # This file
-├── CHANGELOG.md
-│
-├── devices/                           # Device-specific case studies
+├── devices/
 │   └── samsung-a50-a505g/
-│       ├── README.md                  # Full A50 hardening guide
-│       ├── troubleshooting.md         # Known issues & solutions
-│       └── configs/
-│           ├── nextdns-setup.txt
-│           └── shelter-apps-list.txt
+│       ├── configs/
+│       └── README.md
 │
-├── opsec/                             # OPSEC automation & analysis
-│   ├── README.md
-│   ├── CHANGELOG.md
-│   ├── baseline/                      # DNS baseline & threat analysis
-│   ├── case-studies/                  # Real-world threat findings
-│   │   └── assets/
-│   ├── scripts/                       # Analysis & maintenance tools
+├── docs/
+│   ├── rethink/
+│   │   ├── architecture/
+│   │   ├── guides/
+│   │   ├── references/
+│   │   ├── validation/
+│   │   │   └── evidence/
+│   │   └── README.md
+│   │
+│   ├── CONTRIBUTING.md
+│   ├── Documentation-Index.md
+│   └── README.md
+│
+├── nextdns/
+│   ├── allowlists/
+│   ├── blocklists/
+│   └── README.md
+│
+├── opsec/
+│   ├── baseline/
+│   ├── case-studies/
+│   ├── data/
+│   ├── scripts/
 │   │   ├── analysis/
 │   │   ├── investigation/
 │   │   ├── maintenance/
 │   │   └── workflows/
-│   └── data/                          # (git tracked, data ignored)
+│   ├── CHANGELOG.md
+│   └── README.md
 │
-├── docs/                              # General documentation
-│   ├── guides/
-│   └── references/
+├── screenshots/
+│   └── README.md
 │
-├── nextdns/                           # NextDNS blocklists & allowlists
-│   ├── blocklists/                    # Google, Meta, Samsung trackers
-│   └── allowlists/                    # Functional endpoints
-│
-├── logs/                              # (git tracked, logs ignored)
-└── screenshots/
+├── CHANGELOG.md
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-## 🔍 Threat Model & Scope
+# Documentation
 
-### In Scope
-- Passive network observers (ISPs, networks)
-- DNS-level tracking and analytics
-- Telemetry-heavy mobile applications
-- Advertising and tracking networks
-- Risks associated with public Wi-Fi usage
-- Google/Meta/OEM telemetry collection
+The technical documentation is located under:
 
-### Out of Scope
-- Device compromise or malware analysis
-- Root-level, firmware, or baseband attacks
-- Exploitation, bypass, or evasion techniques
+[`docs/`](./docs/)
+
+Start with:
+
+**[Documentation Index](./docs/Documentation-Index.md)**
+
+The documentation index describes:
+
+- Architecture documents
+- Validation reports
+- Configuration guides
+- Evidence
+- Engineering documentation
+- Documentation lifecycle
+- Contribution standards
+
+Documentation and validation are deliberately separated.
+
+A documented configuration is not automatically considered validated.
+
+---
+
+# RethinkDNS Architecture
+
+RethinkDNS is treated as a **network-control component**, not simply as an Android application.
+
+The RethinkDNS documentation module is located at:
+
+**[RethinkDNS Documentation](./docs/rethink/README.md)**
+
+Current documentation includes:
+
+```
+Architecture
+├── ARCH-001 — RethinkDNS Architecture
+└── ARCH-002 — Traffic Flow
+
+Validation
+├── VAL-001 — DNS Validation
+├── VAL-002 — Network Transition & WireGuard Routing Validation
+└── VAL-003 — Version Regression & Upgrade Validation
+
+Guides
+└── Configuration Recommendations
+
+References
+└── Recommended Blocklists
+```
+
+---
+
+## RethinkDNS Validation
+
+The project performs controlled validation instead of assuming that configured routing policies behave correctly.
+
+### VAL-001 — DNS Validation
+
+Tests DNS behavior within the RethinkDNS architecture.
+
+**[Read VAL-001](./docs/rethink/validation/VAL-001-dns-validation.md)**
+
+---
+
+### VAL-002 — Network Transition & WireGuard Routing
+
+VAL-002 validates application routing during WireGuard proxy transitions.
+
+Observed routing sequence:
+
+```
+wg16
+  ↓
+wg17
+  ↓
+wg16
+```
+
+The validation also examined:
+
+- TCP/443 routing
+- UDP/443 routing
+- HTTP/3-associated traffic
+- Firewall persistence
+- DNS continuity
+- Observable simultaneous routing
+- Observable application proxy bypass
+- DNS fallback behavior
+
+Supporting evidence is stored under:
+
+```
+docs/rethink/validation/evidence/VAL-002/
+```
+
+**Result:** `PASS`
+**State:** `CLOSED / VALIDATED`
+
+**[Read VAL-002](./docs/rethink/validation/VAL-002-network-transition-wireguard-routing.md)**
+
+The result applies only to the documented test conditions.
+
+It does **not** constitute packet-level proof that zero packets can escape during every possible network transition.
+
+---
+
+### VAL-003 — Version Regression & Upgrade Validation
+
+RethinkDNS upgrades are treated as potential regression boundaries.
+
+VAL-003 tracks behavior that may change between application versions, including:
+
+- DNS handling
+- WireGuard startup
+- Proxy assignment
+- Firewall enforcement
+- Network transitions
+- Application routing
+
+**[Read VAL-003](./docs/rethink/validation/VAL-003-version-regression-upgrade-validation.md)**
+
+Its validation state is maintained independently from VAL-001 and VAL-002.
+
+---
+
+# DNS Strategy
+
+The architecture is **DNS-provider independent**.
+
+Encrypted DNS providers used or evaluated by the project include:
+
+- NextDNS
+- modDNS
+
+Supported strategies may use:
+
+```
+DNS-over-HTTPS (DoH)
+DNS-over-TLS   (DoT)
+```
+
+The project treats DNS filtering and WireGuard routing as separate architectural layers.
+
+```
+                         +---- NextDNS
+                         |
+Apps → RethinkDNS → DNS -+---- modDNS
+        |                |
+        |                +---- Other compatible resolver
+        |
+        +---- Firewall
+        |
+        +---- WireGuard
+```
+
+Successful web browsing alone is not considered proof that the intended DNS resolver is being used.
+
+DNS behavior should be validated through observable resolver activity.
+
+---
+
+# NextDNS
+
+NextDNS-specific policies remain under:
+
+[`nextdns/`](./nextdns/)
+
+```
+nextdns/
+├── allowlists/
+├── blocklists/
+└── README.md
+```
+
+These resources contain project-specific filtering and compatibility rules.
+
+The separation between `nextdns/` and `docs/rethink/` is intentional:
+
+- `docs/rethink/` documents the general network architecture.
+- `nextdns/` contains NextDNS-specific policy material.
+
+RethinkDNS does not require NextDNS to function as the network-control layer.
+
+---
+
+# Blocklist Strategy
+
+The project favors auditable filtering over enabling large numbers of overlapping blocklists.
+
+A preferred model is:
+
+```
+Balanced privacy filtering
+          +
+Security protections
+          +
+Targeted OPSEC rules
+          +
+Minimal allowlisting
+```
+
+rather than stacking multiple aggressive lists without understanding their interactions.
+
+See:
+
+**[Recommended Blocklists](./docs/rethink/references/recommended-blocklists.md)**
+
+Filtering decisions should be based on observed behavior and technical purpose rather than vendor ownership alone.
+
+---
+
+# VPN & WireGuard
+
+The architecture is not tied to a single VPN provider.
+
+Privacy-oriented providers used or evaluated by the project include:
+
+- Mullvad
+- IVPN
+- Proton VPN
+
+Relevant criteria include:
+
+- WireGuard support
+- Privacy policy
+- Independent security audits
+- Minimal telemetry
+- Stable Android support
+- Standard WireGuard configuration support when required
+
+Provider reputation does not by itself validate the local routing architecture.
+
+Traffic paths should still be tested.
+
+---
+
+# Firewall Strategy
+
+RethinkDNS provides the primary application-level network policy layer within the documented architecture.
+
+Firewall policies can be used to:
+
+- Restrict unnecessary network access.
+- Block unwanted outbound traffic.
+- Prevent insecure HTTP where compatible.
+- Investigate unexpected application destinations.
+- Apply application-specific network controls.
+
+During VAL-002, the configured insecure HTTP policy was observed blocking TCP/80 traffic while the WireGuard transition tests were being performed.
+
+This observation applies to the tested configuration.
+
+---
+
+# Application Isolation
+
+Network hardening is only one layer of the project.
+
+Application isolation may additionally use Android work profiles and permission controls.
+
+The general model is:
+
+```
+Application
+    |
+    +---- Permission restrictions
+    |
+    +---- Work-profile isolation
+    |
+    +---- Firewall policy
+    |
+    +---- DNS policy
+    |
+    +---- WireGuard routing
+```
+
+Not every application requires the same policy.
+
+Configuration should reflect the application's purpose and the relevant threat model.
+
+---
+
+# Device Case Studies
+
+Device-specific behavior is maintained separately from general architecture.
+
+Current device:
+
+## Samsung Galaxy A50 — SM-A505G
+
+**[Device Documentation](./devices/samsung-a50-a505g/README.md)**
+
+Device documentation may include:
+
+- ROM compatibility
+- Network behavior
+- Application isolation
+- RethinkDNS compatibility
+- DNS configuration
+- VPN integration
+- Troubleshooting
+- Device-specific limitations
+
+Behavior observed on one Android device should not automatically be assumed to apply to another.
+
+---
+
+# OPSEC Automation & Analysis
+
+The `opsec/` module contains analysis and automation resources.
+
+```
+opsec/
+├── baseline/
+├── case-studies/
+├── data/
+└── scripts/
+    ├── analysis/
+    ├── investigation/
+    ├── maintenance/
+    └── workflows/
+```
+
+Current tooling includes functionality for:
+
+- DNS review
+- Unknown-domain extraction
+- Domain investigation
+- Baseline maintenance
+- Automated updates
+- OPSEC workflows
+
+**[OPSEC Documentation](./opsec/README.md)**
+
+---
+
+# Real-World Case Studies
+
+The project also documents security events investigated using its OPSEC methodology.
+
+These are separated from device hardening case studies.
+
+Current example:
+
+**[Contabo / Roundcube Phishing Investigation](./opsec/case-studies/2026-08-phishing-contabo-roundcube.md)**
+
+The investigation documents correlation between multiple security sources and a detection false-negative scenario.
+
+Case studies may contain successful detections, false positives, false negatives, unexpected behavior, or vendor-response observations.
+
+Negative results are considered useful evidence when properly documented.
+
+---
+
+# Threat Model
+
+## In Scope
+
+The project primarily addresses:
+
+- DNS-level tracking
+- Advertising and analytics infrastructure
+- Application telemetry
+- Unnecessary outbound connectivity
+- Privacy risks on untrusted networks
+- DNS resolver behavior
+- VPN/WireGuard routing behavior
+- Application-level network policy
+- Configuration regressions
+- Suspicious domain investigation
+
+## Out of Scope
+
+The project does not claim protection against:
+
 - Nation-state adversaries
-- Physical device access
+- Baseband compromise
+- Hardware implants
+- Zero-day exploitation
+- Physical device compromise
+- Fully compromised operating systems
+- Malicious firmware
 
-**This project focuses on defensive hardening, not adversarial activity.**
-
----
-
-## 🔀 Hybrid OPSEC Model
-
-Rather than blocking entire platforms or ecosystems, this project follows a **selective hybrid strategy**:
-
-- ✅ Allow core APIs, CDNs, and functional endpoints
-- ✅ Selectively block telemetry, analytics, and advertising domains
-- ✅ Validate application behavior after each configuration change
-- ✅ Iterate based on **measurable DNS metrics**, not assumptions
-- ✅ Preserve usability while reducing tracking exposure
-
-**Privacy and usability must coexist.**
+The project focuses on **defensive hardening and observable network behavior**.
 
 ---
 
-## Quick Start
+# Security Claims
 
-### For Users
+Absolute security claims are intentionally avoided.
 
-Pick a device matching yours:
-
-- **[Samsung Galaxy A50 (SM-A505G)](./devices/samsung-a50-a505g/)** 
-  - Android 12.1 (crDroid 9.5)
-  - GrapheneOS-like privacy stack
-  - App sandboxing via Shelter
-  - Hybrid DNS + VPN configuration
-  - Status: ✅ Stable & Daily-Use Tested (2+ weeks)
-
-### For Developers/Researchers
-
-Review the [Architecture](#architecture) section and [Contributing](#contributing) guidelines to add additional device cases.
-
----
-
-## Architecture
-
-### Device Case Studies
-
-Each device subdirectory follows this template:
+For example, instead of:
 
 ```
-devices/[manufacturer]-[model]-[variant]/
-├── README.md                    # Complete setup guide
-├── troubleshooting.md           # Known issues & solutions
-├── lessons-learned.md           # What worked/failed & why
-├── performance-metrics.md       # Real-world performance data
-└── configs/
-    ├── nextdns-setup.txt
-    ├── shelter-sandbox-apps.txt
-    ├── permissions-hardening.md
-    └── firewall-rules.md (if applicable)
+This configuration prevents all DNS leaks.
 ```
 
-### OPSEC Automation & Analysis
-
-Scripts and tools under `opsec/`:
+the project prefers:
 
 ```
-opsec/scripts/
-├── analysis/                    # DNS review, threat analysis
-├── investigation/               # Domain investigation tools
-├── maintenance/                 # Updater & cleanup tools
-└── workflows/                   # Integrated OPSEC workflows
+No DNS bypass was observed during the documented validation scenarios.
 ```
 
----
-### OPSEC Case Studies
+Observed behavior depends on:
 
-Real-world findings produced by applying this repo's investigation tooling (`opsec/scripts/investigation/`) and detection methodology to threats encountered in the wild — not simulated scenarios.
-```
-opsec/case-studies/
-├── README.md
-└── YYYY-MM-short-description.md
-```
-Each entry cross-verifies detection across multiple sources (VirusTotal, sandbox history, vendor tools) and documents the responsible disclosure process when a vendor is contacted. See [`opsec/case-studies/`](./opsec/case-studies/).
----
+- Device
+- Android version
+- ROM
+- RethinkDNS version
+- DNS configuration
+- VPN configuration
+- Network environment
+- Test conditions
 
-## Case Studies
-
-This project maintains two kinds of case studies: **device hardening guides** (below) and **OPSEC investigation findings** ([`opsec/case-studies/`](./opsec/case-studies/)) — real threats analyzed using this repo's own methodology.
-
-### Samsung Galaxy A50 (SM-A505G)
-
-**Status:** ✅ Active, Daily Use  
-**Android Version:** 12.1 (crDroid 9.5)  
-**Duration Tested:** 2+ weeks (ongoing)  
-**Bootloader:** Unlocked, Knox Fused  
-**Root:** None (intentional)
-
-**Key Achievements:**
-- Removed all Google Services (microG replacement)
-- App sandboxing via Shelter work profiles
-- DNS filtering (NextDNS) + VPN (Mullvad always-on)
-- Stable WiFi after comprehensive kernel troubleshooting
-- No root required — OS-level controls sufficient
-
-**Why No Root?**
-- Magisk incompatible with A50 ramdisk architecture
-- KernelSU requires GKI kernels (device uses custom Bocchi kernel)
-- Root installation caused bootloop on multiple kernel attempts
-- OS-level controls (work profiles, permissions) sufficient for privacy goals
-- Rootless = more stable long-term
-
-**Key Lesson:** Root isn't always necessary for privacy. Deliberate OS-level controls + DNS filtering + VPN can achieve comparable privacy without stability risks.
-
-**[Read Full Guide →](./devices/samsung-a50-a505g/README.md)**
+Stronger claims require correspondingly stronger evidence.
 
 ---
 
-### Detection False Negative: Compromised Contabo VPS Serving Phishing
+# Evidence & Privacy
 
-**Status:** 🟡 Pending vendor response
-**Type:** Threat investigation (not device hardening)
+Public evidence may include:
 
-A phishing email was cross-verified across VirusTotal, ANY.RUN sandbox history, and a VPN vendor's URL reputation tool — revealing a detection gap where the vendor's own checker classified a known-bad URL as clean. Documents the full OSINT correlation process and responsible disclosure to the vendor.
+- Screenshots
+- Sanitized logs
+- Test output
+- Configuration excerpts
+- Network observations
+- Packet captures where appropriate
 
-**[Read Full Case Study →](./opsec/case-studies/2026-08-phishing-contabo-roundcube.md)**
+Sensitive information must not be committed.
 
----
+Examples include:
 
-## 🔐 Privacy Stack Components
+- WireGuard private keys
+- VPN credentials
+- API tokens
+- Authentication credentials
+- Personal DNS identifiers
+- Personal identifiers
+- Backup files containing secrets
 
-### Application Level
-- **F-Droid** — FOSS app store (no Google Play required)
-- **microG** — Lightweight Google Services replacement
-- **Shelter** — App sandboxing via work profiles
-- **Mullvad VPN** — Always-on, no-logs VPN (configurable)
-
-### Network Level
-- **NextDNS** — DNS-level ad/tracker blocking
-- **DNS-over-HTTPS** — Encrypted DNS queries
-- **VPN Integration** — Privacy-respecting providers (Mullvad, IVPN, Proton)
-- **Split-tunneling** (optional, context-dependent)
-
-### System Level
-- **Permission Hardening** — Granular per-app controls
-- **Telemetry Disabling** — Samsung/Google/OEM tracking removal
-- **SELinux** — Mandatory Access Control (system-wide)
-
-### Hardware Level
-- **Verified Boot** — Bootloader & system partition integrity
-- **Bootloader Status** — Security implications documented
-
----
-
-## VPN Considerations
-
-The project is **VPN-agnostic** but designed and tested with privacy-respecting providers:
-
-- **Mullvad** (recommended for A50 guide)
-- **IVPN**
-- **Proton VPN**
-
-### Key Principles
-- No traffic inspection
-- No user tracking
-- No logging policies
-- Proper DNS handling with custom resolvers
-- VPN usage for **privacy and security only**, not circumvention
-
----
-
-## Contributing
-
-### Adding Your Device
-
-1. Create folder: `devices/[manufacturer]-[model]-[variant]/`
-2. Use template from existing guide (A50)
-3. **Test on actual hardware (minimum 2-4 weeks daily use)**
-4. Document failures, not just successes
-5. Submit PR with device specs in commit message
-
-### Submission Checklist
-
-- [ ] Device model & variant (e.g., SM-A505G)
-- [ ] Android version & ROM used
-- [ ] Installation steps (bootloader unlock → final setup)
-- [ ] Privacy stack components tested
-- [ ] Performance impact measured
-- [ ] Troubleshooting section completed
-- [ ] Lessons learned documented
-- [ ] Real-world usage duration (minimum 2 weeks)
-
-### Commit Message Template
+Sensitive values should be replaced with explicit placeholders such as:
 
 ```
-docs: add [device] [rom] [android-version] hardening guide
-
-- Device: Samsung Galaxy A50 (SM-A505G)
-- ROM: crDroid 9.5
-- Android: 12.1
-- Duration tested: 2+ weeks daily use
-- Key achievement: X privacy goal achieved without root
-- Hybrid OPSEC: NextDNS + Mullvad VPN
+<REDACTED>
 ```
 
----
+Technical context should be preserved where possible.
 
-## Security Considerations
+For example:
 
-### What This Protects Against
-- ✅ ISP/network-level tracking (VPN)
-- ✅ Google/Meta/Samsung tracking (F-Droid + microG + DNS blocking)
-- ✅ App data leaks (Shelter sandboxing)
-- ✅ DNS leaks (NextDNS + VPN)
-- ✅ Telemetry & analytics collection
-- ✅ Public Wi-Fi eavesdropping (VPN)
+```
+<REDACTED>.dns.example.net:853
+```
 
-### What This Does NOT Protect Against
-- ❌ Nation-state adversaries
-- ❌ Physical device access or theft
-- ❌ Supply-chain compromises
-- ❌ Zero-day exploits
-- ❌ Compromised apps (even in sandbox)
-- ❌ Malware or device compromise
-
-### Limitations
-
-- No kernel-level hardening (requires custom kernel with GKI)
-- No exploit prevention beyond standard SELinux
-- Bootloader unlock reduces security baseline (Knox fused)
-- microG cannot replace all Play Services features
-- DNS filtering is not encryption (use with VPN)
-
-### Best Practices
-
-1. **Shelter untrusted apps** — Use work profiles for questionable apps
-2. **Enable VPN always-on** — Prevent traffic leaks if VPN disconnects
-3. **Review permissions** — Even F-Droid apps should be permission-audited
-4. **Update regularly** — crDroid/LineageOS security patches critical
-5. **Backup data** — Before flashing ROMs or kernels
-6. **Monitor DNS queries** — Use NextDNS dashboard to validate filtering
+may preserve useful resolver and transport information without exposing the private identifier.
 
 ---
 
-## Performance Baseline
+# Validation Model
 
-### Typical Metrics (A50 + crDroid 9.5 + NextDNS + Mullvad)
+Validation reports define their expected result, environment, methodology, observations, and limitations.
 
-| Metric | Value | Notes |
-|---|---|---|
-| Boot Time | 25-30s | Normal for custom ROM |
-| App Launch | Baseline | No overhead from hardening |
-| Battery Life | 1.5 days | Heavy use + VPN always-on |
-| RAM Usage | 2.8GB / 4GB | Shelter adds ~50MB per sandboxed app |
-| Storage Impact | ~2GB | microG + F-Droid + apps |
-| VPN Overhead | <5% | Negligible for browsing |
-| DNS Query Reduction | 70%+ | With NextDNS filtering |
+Possible test results include:
 
----
+```
+PASS
+FAIL
+PARTIAL
+INCONCLUSIVE
+NOT TESTED
+```
 
-## 🧠 Lessons Learned
+Additional observations may use states such as:
 
-### What Worked
-- ✅ **crDroid 9.5** — 100% stable, optimized AOSP
-- ✅ **Shelter for isolation** — Works without root via work profiles
-- ✅ **F-Droid + microG** — Zero Google dependencies, minimal friction
-- ✅ **Rootless approach** — Avoids bootloop risks, long-term stability
-- ✅ **NextDNS + VPN** — Effective hybrid model with usability intact
+```
+NOT OBSERVED
+OUT OF SCOPE
+```
 
-### What Didn't Work
-- ❌ **Magisk on A50** — Incompatible ramdisk architecture
-- ❌ **KernelSU with Bocchi kernel** — Requires GKI, got "Not supported" error
-- ❌ **Mint kernels with Android 13** — WiFi driver crash loops on A505G
-- ❌ **LineageOS 20** — Bootloader/kernel compatibility issues on this device
-
-### Key Insight
-**Stability over features.** A proven, stable setup (Android 12 + Bocchi kernel + crDroid) is worth more than newer versions (Android 13+) that introduce instability. Privacy achieved through **reliability**, not bleeding-edge technology.
+`NOT OBSERVED` does not mean that a behavior has been proven impossible.
 
 ---
 
-## 📊 Metrics & Validation
+# Upgrade & Regression Testing
 
-Effectiveness is evaluated using:
+Network-security components can change behavior between releases.
 
-- DNS query volume comparison (before / after configuration)
-- Reduction of telemetry-heavy domains (NextDNS logs)
-- Functional testing of apps and system services
-- Stability when combining DNS filtering and VPN usage
-- Battery life and performance impact measurement
+Important upgrades should therefore follow a process similar to:
 
-**No personal data, identifiers, or raw logs are included in this repository.**
+```
+Known baseline
+      |
+      v
+Backup configuration
+      |
+      v
+Record current state
+      |
+      v
+Install candidate version
+      |
+      v
+Execute validation
+      |
+      v
+Compare with baseline
+      |
+      v
+Accept / Reject / Continue Testing
+```
 
----
+This approach is particularly important for:
 
-## References & Resources
-
-### Official Projects
-- **F-Droid:** https://f-droid.org
-- **microG:** https://microg.org
-- **Shelter:** https://typeblog.net/shelter/
-- **Mullvad VPN:** https://mullvad.net
-- **NextDNS:** https://nextdns.io
-- **crDroid:** https://crdroid.net
-
-### Privacy & Security Research
-- **GrapheneOS Security Model:** https://grapheneos.org/features
-- **Android Hardening Documentation:** https://source.android.com/docs/security
-- **EFF Privacy Guide:** https://ssd.eff.org
-
-### Technical Documentation
-- **Android Verified Boot:** https://source.android.com/docs/security/verifiedboot
-- **SELinux on Android:** https://source.android.com/docs/security/selinux
-- **DNS Security (RFC 8310):** DNS over HTTPS standards
-
----
-
-## FAQ
-
-### Q: Why not use GrapheneOS?
-**A:** GrapheneOS doesn't support older devices like the A50. This project documents how to achieve **comparable privacy goals** on unsupported hardware using FOSS alternatives.
-
-### Q: Is root required?
-**A:** No. Rootless approach is intentional — OS-level controls (work profiles, permissions) are sufficient for privacy. Root adds complexity and stability risks on older devices.
-
-### Q: What if my device isn't listed?
-**A:** Contribute a case study! Follow the [Contributing](#contributing) guidelines. Test on actual hardware for 2+ weeks and document both successes and failures.
-
-### Q: Does this replace antivirus?
-**A:** No. These are privacy hardening guides, not malware protection. Assume app-level malware is possible; use Shelter to sandbox untrusted apps.
-
-### Q: Can I contribute improvements?
-**A:** Yes! Submit PRs with:
-- Real-world testing results (2+ weeks minimum)
-- Device specs & ROM version
-- Documented failures (learning experiences)
-- Performance metrics
+- RethinkDNS
+- VPN applications
+- WireGuard configurations
+- DNS resolvers
+- Android networking changes
+- ROM upgrades
 
 ---
 
-## ⚖️ Ethical & Legal Notice
+# Metrics & Observability
 
-This project is **strictly defensive and educational**.
+Depending on the validation objective, measurements may include:
 
-It does **NOT** promote:
-- Circumvention of laws or regulations
-- Bypassing device or platform safeguards
-- Abuse of services or targeting of organizations
+- DNS query behavior
+- Blocked-domain activity
+- Application functionality
+- Firewall decisions
+- WireGuard proxy attribution
+- TCP/UDP behavior
+- DNS resolver attribution
+- Network transition behavior
+- Battery and performance impact
 
-All configurations are **documented, reversible, and intended for learning and personal hardening** purposes.
+Metrics should be interpreted within their test environment.
 
-**Users are responsible for** complying with local laws, service terms, and ethical standards.
-
----
-
-## License
-
-This repository is provided for **educational and research purposes**. Use at your own risk.
-
-- ROM installation voids warranty
-- Bootloader unlock can brick devices
-- Privacy is not guaranteed; these measures reduce (not eliminate) tracking
-
-See [LICENSE](./LICENSE) file for details.
+A single metric should not be used as proof of overall security.
 
 ---
 
-## Status & Maintenance
+# Contributing
 
-### Device Guides
+Contributions are welcome when they follow the project's engineering and documentation principles.
 
-| Device | ROM | Android | Status | Last Tested |
-|---|---|---|---|---|
-| Samsung A50 (SM-A505G) | crDroid 9.5 | 12.1 | ✅ Stable | June 2026 |
-| (More devices coming) | — | — | 🚧 Planned | — |
+Before contributing, read:
 
-### OPSEC Case Studies
+**[CONTRIBUTING.md](./docs/CONTRIBUTING.md)**
 
-| Case Study | Type | Status | Last Updated |
-|---|---|---|---|
-| [Contabo/Roundcube Phishing — Detection False Negative](./opsec/case-studies/2026-08-phishing-contabo-roundcube.md) | Threat investigation | 🟡 Pending vendor response | August 2026 |
+Contributions should prioritize:
 
----
+- Reproducible testing
+- Evidence-backed claims
+- Documentation of failures
+- Explicit test environments
+- Version information
+- Security trade-offs
+- Sensitive-data minimization
 
-## Contact & Support
-
-- **Issues:** Open GitHub issue with device model & problem description
-- **Contributions:** Fork → test → submit PR
-- **Questions:** Include device specs, ROM version, and reproduction steps
+A failed or inconclusive experiment may still be valuable.
 
 ---
 
-**Last Updated:** August 2026  
-**Maintainer:** [@augustozarate](https://github.com/augustozarate)  
-**Portfolio:** [Cybersecurity & Privacy Engineering](https://github.com/augustozarate)
+# Documentation Lifecycle
 
-⭐ If you find this project useful, please give it a star on GitHub!
+Technical documentation generally follows:
+
+```
+Draft
+  |
+  v
+Under Review
+  |
+  v
+Validated
+  |
+  v
+Published
+  |
+  +----> Deprecated
+  |
+  +----> Archived
+```
+
+Documentation versions are independent from software versions.
+
+---
+
+# Current Project Status
+
+| Area | Status |
+|---|---|
+| RethinkDNS base architecture | 📘 Documented |
+| RethinkDNS traffic flow | 📘 Documented |
+| DNS validation | ✅ Validation available |
+| WireGuard transition validation | ✅ CLOSED / VALIDATED |
+| RethinkDNS regression testing | 🧪 Active validation track |
+| Configuration guidance | 📘 Documented |
+| Blocklist strategy | 📘 Documented |
+| NextDNS policies | 🔧 Maintained |
+| OPSEC automation | 🔧 Active |
+| Security case studies | 🔎 Active |
+| Device documentation | 🔧 Active |
+
+The project is continuously evolving as new configurations, software versions, and validation scenarios are tested.
+
+---
+
+# References & Resources
+
+## Project Documentation
+
+- **[Documentation Index](./docs/Documentation-Index.md)**
+- **[RethinkDNS Documentation](./docs/rethink/README.md)**
+- **[RethinkDNS Configuration Recommendations](./docs/rethink/guides/configuration-recommendations.md)**
+- **[Contributing Guidelines](./docs/CONTRIBUTING.md)**
+
+## External Projects
+
+- F-Droid
+- microG
+- Shelter
+- RethinkDNS
+- NextDNS
+- Mullvad
+- IVPN
+- Proton VPN
+
+External projects are referenced for interoperability and research.
+Their inclusion does not imply endorsement of every feature, configuration, or security claim made by those projects.
+
+---
+
+# Ethical & Legal Notice
+
+This project is intended for:
+
+- Defensive security
+- Privacy engineering
+- Security research
+- Education
+- Personal device hardening
+
+It does not promote abuse, unauthorized access, or attacks against third-party systems.
+
+Users are responsible for complying with applicable laws, service agreements, and platform policies.
+
+---
+
+# License
+
+This repository is provided for educational and research purposes.
+
+Use of custom ROMs, unlocked bootloaders, VPN configurations, DNS filtering, or other system modifications may introduce compatibility or security trade-offs.
+
+Privacy and security are not guaranteed.
+
+See:
+
+**[LICENSE](./LICENSE)**
+
+---
+
+# Maintainer
+
+**[@augustozarate](https://github.com/augustozarate)**
+
+Project focus:
+
+**Cybersecurity · Privacy Engineering · Android OPSEC · Network Validation**
+
+---
+
+⭐ If this project is useful, consider starring the repository.

@@ -56,7 +56,7 @@ After extensive testing with:
 
 ### Step 1: Unlock Bootloader
 
-```bash
+```
 # Enter Download Mode: Vol Down + Vol Up + Connect USB
 # In Odin, slot AP = vbmeta.img
 # One-way operation: Knox flag is burned
@@ -70,7 +70,7 @@ After extensive testing with:
 **Source:** GiovanYCringe fork (includes vbmeta)  
 **Method:** Odin flasher via Download Mode
 
-```bash
+```
 # Odin settings:
 # - Slot AP: twrp.tar (from GiovanYCringe releases)
 # - Auto Reboot: UNCHECKED
@@ -84,7 +84,7 @@ After flash, boot into TWRP: `Power + Vol Up` (while USB connected)
 **ROM:** crDroid 9.5 (by GiovaniYCringe)  
 **Link:** Available on XDA Forums (A505F/A505FN unofficial builds)
 
-```bash
+```
 # From TWRP:
 1. Wipe → Advanced Wipe (System + Data + Cache + Dalvik)
 2. Install → crDroid-9.5-*.zip
@@ -96,7 +96,7 @@ After flash, boot into TWRP: `Power + Vol Up` (while USB connected)
 
 ### Step 4: Initial Setup
 
-```bash
+```
 # In Android Setup Wizard:
 1. Skip Google account (or use dummy account)
 2. Enable Developer Options: Settings → About → Tap "Build Number" 7x
@@ -121,7 +121,7 @@ After flash, boot into TWRP: `Power + Vol Up` (while USB connected)
 
 **F-Droid:** Open-source app store, no Google dependencies
 
-```bash
+```
 # Download & Install
 wget https://f-droid.org/F-Droid.apk
 adb install F-Droid.apk
@@ -152,7 +152,7 @@ adb install F-Droid.apk
    Look for: `MicroG-release-*.zip` (arm64 variant)
 
 2. Copy to phone:
-   ```bash
+   ```
    adb push MicroG-*.zip /sdcard/
    ```
 
@@ -187,7 +187,7 @@ Shelter creates a **work profile** that acts as a sandbox:
 
 #### 1. Install & Create Work Profile
 
-```bash
+```
 F-Droid → Install "Shelter"
 Shelter app → "Create Work Profile"
 # Permit all requested permissions
@@ -197,14 +197,14 @@ Shelter app → "Create Work Profile"
 
 For **untrusted or data-hungry apps:**
 
-```bash
+```
 Shelter → Long-press app → "Clone to Shelter (work profile)"
 # App now appears twice in app drawer
 ```
 
 #### 3. Remove Original (Optional)
 
-```bash
+```
 Settings → Apps → Uninstall (original version)
 # Keep only sandboxed version
 ```
@@ -219,7 +219,7 @@ Settings → Apps → Uninstall (original version)
 
 ### Data Isolation Verification
 
-```bash
+```
 Shelter → Package list
 # Work profile apps are marked and isolated
 # Each has separate /data/data/com.app.package directory
@@ -233,7 +233,7 @@ Shelter → Package list
 
 **Setup:**
 
-```bash
+```
 Settings → Network → Private DNS
 # Set to: dns.nextdns.io
 # OR: [YOUR_PROFILE_ID].dns.nextdns.io
@@ -250,7 +250,7 @@ Settings → Network → Private DNS
 
 **Configuration:**
 
-```bash
+```
 Mullvad → Settings → Always-on VPN: ENABLED
 Mullvad → Settings → Block when disconnected: ENABLED
 ```
@@ -266,7 +266,7 @@ Mullvad → Settings → Block when disconnected: ENABLED
 
 ### Disable Location Tracking
 
-```bash
+```
 Settings → Privacy → Location
 # Disable "Location" entirely
 # OR: Set to "GPS only" (no network-based location)
@@ -274,7 +274,7 @@ Settings → Privacy → Location
 
 ### Camera & Microphone Controls
 
-```bash
+```
 Settings → Apps → Permissions
 # For each app: Camera → Deny or "Allow only while using"
 # For each app: Microphone → Deny or "Allow only while using"
@@ -282,7 +282,7 @@ Settings → Apps → Permissions
 
 ### Samsung-Specific Telemetry
 
-```bash
+```
 Settings → Samsung Members → Disable "Help improve"
 Settings → Samsung Account → Disable "Personalised services"
 Bixby → Voice → DISABLE
@@ -290,7 +290,7 @@ Bixby → Voice → DISABLE
 
 ### Contact & Calendar Sync
 
-```bash
+```
 Settings → Accounts
 # Remove Samsung Cloud sync (optional)
 # Keep local AOSP sync for Contacts/Calendar
