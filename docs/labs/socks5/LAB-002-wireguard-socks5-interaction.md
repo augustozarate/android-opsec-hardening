@@ -216,7 +216,7 @@ No model is considered valid until traffic evidence supports it.
 | LAB-002B | Enable WireGuard with SOCKS5 configured | PASS |
 | LAB-002C | Observe Android-to-HEV traffic | PASS |
 | LAB-002D | Observe HEV outbound transport | PASS |
-| LAB-002E | Public-egress comparison | NOT RUN |
+| LAB-002E | Public-egress comparison | PASS |
 | LAB-002F | DNS behavior comparison | NOT RUN |
 | LAB-002G | UDP behavior comparison | NOT RUN |
 | LAB-002H | SOCKS5 failure behavior | NOT RUN |

@@ -106,3 +106,16 @@ One successful flow != universal routing behavior
   - 30-second successful timing validation with stable A50 IPv4/MAC still produced no HEV activity
   - successful example.com request remained at zero TCP/1080, UDP/1081, HEV-log, and first-leg PCAP activity
   - failed api.ipify.org request retained separately as auxiliary evidence and not used for the PASS classification
+
+### LAB-002E
+
+- `LAB-002E-public-egress-comparison.md`
+  - A50 public IPv4 reached three-provider consensus
+  - Kali public IPv4 reached three-provider consensus
+  - A50 and Kali public egress were different
+  - raw public IPv4 values intentionally omitted from committed evidence
+  - no TCP/1080 or UDP/1081 HEV activity observed
+  - no new HEV log events observed
+  - classified DIFFERENT_PUBLIC_EGRESS_WITHOUT_HEV
+  - result is strong operational evidence of a non-HEV path
+  - WireGuard transport is not yet treated as independently proven
