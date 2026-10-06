@@ -212,7 +212,7 @@ No model is considered valid until traffic evidence supports it.
 
 | Phase | Purpose | State |
 |---|---|---|
-| LAB-002A | Reproduce LAB-001B known-good baseline | NOT RUN |
+| LAB-002A | Reproduce LAB-001B known-good baseline | PASS |
 | LAB-002B | Enable WireGuard with SOCKS5 configured | NOT RUN |
 | LAB-002C | Observe Android-to-HEV traffic | NOT RUN |
 | LAB-002D | Observe HEV outbound transport | NOT RUN |

@@ -57,3 +57,15 @@ Configured != Validated
 Observed != Persisted
 One successful flow != universal routing behavior
 ~~~
+
+## Recorded evidence
+
+### LAB-002A
+
+- `LAB-002A-known-good-baseline-reproduction.md`
+  - known-good SOCKS5 baseline reproduction
+  - initial failure caused by A50 IPv4 address drift
+  - stale nftables source-IP ACL identified
+  - TCP/1080 and UDP/1081 operation restored after ACL correction
+  - generic deny policy preserved
+  - WireGuard not introduced
