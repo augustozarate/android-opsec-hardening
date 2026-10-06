@@ -119,3 +119,18 @@ One successful flow != universal routing behavior
   - classified DIFFERENT_PUBLIC_EGRESS_WITHOUT_HEV
   - result is strong operational evidence of a non-HEV path
   - WireGuard transport is not yet treated as independently proven
+
+### LAB-002F
+
+- `LAB-002F-dns-behavior-comparison.md`
+  - unique controlled DNS hostname observed in RethinkDNS
+  - Brave identified as the requesting application
+  - IPv4 and HTTP Service Binding query entries observed
+  - WG association visible in RethinkDNS UI
+  - resolver metadata referenced `wg15:10.2.0.1:53`
+  - no TCP/1080 or UDP/1081 HEV activity observed
+  - no new HEV log events observed
+  - A50-to-HEV capture contained zero packets
+  - zero port 53/853 visibility from Kali retained only as a scoped observation
+  - original manual NOT_FOUND preserved and superseded through explicit visual reconciliation
+  - classified RETHINK_DNS_OBSERVED_WITHOUT_HEV
