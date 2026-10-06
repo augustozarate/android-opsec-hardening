@@ -134,3 +134,16 @@ One successful flow != universal routing behavior
   - zero port 53/853 visibility from Kali retained only as a scoped observation
   - original manual NOT_FOUND preserved and superseded through explicit visual reconciliation
   - classified RETHINK_DNS_OBSERVED_WITHOUT_HEV
+
+### LAB-002G
+
+- `LAB-002G-udp-behavior-comparison.md`
+  - Brave application UDP/443 explicitly observed in RethinkDNS
+  - controlled Cloudflare workload reported HTTP/3
+  - UDP/443 flow displayed WireGuard-associated `wg16` metadata
+  - concurrent TCP/443 flow also observed and associated with `wg16`
+  - no TCP/1080 or UDP/1081 HEV activity observed
+  - no new HEV TCP or UDP events observed
+  - A50-to-HEV capture contained zero packets
+  - `wg16` retained as a phase-local runtime identifier, not assumed stable
+  - classified APP_UDP_OBSERVED_WITHOUT_HEV
