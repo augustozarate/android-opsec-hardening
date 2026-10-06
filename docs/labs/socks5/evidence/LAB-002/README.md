@@ -79,3 +79,14 @@ One successful flow != universal routing behavior
   - no deliberate application workload generated
   - no HEV traffic observed during the configuration-only window
   - packet-routing order remains unvalidated
+
+### LAB-002C
+
+- `LAB-002C-android-to-hev-combined-state.md`
+  - controlled page load completed with WireGuard ON + SOCKS5 ON
+  - no A50-to-HEV TCP/1080 traffic observed
+  - no A50-to-HEV UDP/1081 traffic observed
+  - no new HEV SOCKS5 events observed
+  - zero matching packets in the scoped first-leg capture
+  - HEV path not observed for the controlled workload
+  - WireGuard transport not yet independently validated
