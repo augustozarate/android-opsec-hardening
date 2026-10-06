@@ -147,3 +147,19 @@ One successful flow != universal routing behavior
   - A50-to-HEV capture contained zero packets
   - `wg16` retained as a phase-local runtime identifier, not assumed stable
   - classified APP_UDP_OBSERVED_WITHOUT_HEV
+
+### LAB-002H
+
+- `LAB-002H-socks5-failure-behavior.md`
+  - HEV process deliberately stopped before controlled workload
+  - HEV TCP/1080 listener independently confirmed absent
+  - new Brave/example.net workload loaded successfully
+  - RethinkDNS associated the relevant flow with WireGuard
+  - visual evidence showed HTTP3 / UDP/443 with `wg16`
+  - zero TCP/1080 and UDP/1081 attempts during HEV outage
+  - failure-window A50-to-HEV capture contained zero packets
+  - no HEV log growth occurred while backend was unavailable
+  - original automatic INCONCLUSIVE result preserved
+  - functional result reconciled as HEV_FAILURE_DID_NOT_AFFECT_TESTED_WG_FLOW
+  - SOCKS5 final UI persistence remains UNKNOWN / NOT VERIFIED
+  - HEV successfully restored after the controlled outage

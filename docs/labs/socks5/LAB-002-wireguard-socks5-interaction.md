@@ -219,7 +219,7 @@ No model is considered valid until traffic evidence supports it.
 | LAB-002E | Public-egress comparison | PASS |
 | LAB-002F | DNS behavior comparison | PASS |
 | LAB-002G | UDP behavior comparison | PASS |
-| LAB-002H | SOCKS5 failure behavior | NOT RUN |
+| LAB-002H | SOCKS5 failure behavior | PASS |
 | LAB-002I | WireGuard failure behavior | NOT RUN |
 | LAB-002J | Fail-open / bypass characterization | NOT RUN |
 
