@@ -90,3 +90,19 @@ One successful flow != universal routing behavior
   - zero matching packets in the scoped first-leg capture
   - HEV path not observed for the controlled workload
   - WireGuard transport not yet independently validated
+
+### LAB-002D
+
+- `LAB-002D-hev-outbound-transport-observation.md`
+  - controlled page load completed with WireGuard ON + SOCKS5 ON
+  - A50 current IPv4 observed as 10.36.136.41
+  - LAB nftables state recovered before testing
+  - no A50-to-HEV TCP/1080 or UDP/1081 activity observed
+  - no new HEV events or HEV destinations observed
+  - first-leg capture contained zero packets
+  - two Kali external packets were observed and characterized as NTP background traffic
+  - no HEV-attributable outbound transport observed
+  - WireGuard transport remains independently unvalidated
+  - 30-second successful timing validation with stable A50 IPv4/MAC still produced no HEV activity
+  - successful example.com request remained at zero TCP/1080, UDP/1081, HEV-log, and first-leg PCAP activity
+  - failed api.ipify.org request retained separately as auxiliary evidence and not used for the PASS classification
