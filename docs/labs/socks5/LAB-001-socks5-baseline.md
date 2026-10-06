@@ -1,6 +1,6 @@
 # LAB-001 — SOCKS5 Baseline Routing Validation
 
-**Status:** PLANNED / NOT VALIDATED
+**Status:** IN PROGRESS / PARTIALLY VALIDATED
 
 ## 1. Objective
 
@@ -46,8 +46,10 @@ LAB-001 will determine:
 
 ## 4. Validation state
 
-No routing property described by this document should be considered
-validated until supporting evidence has been collected and reviewed.
+Validation is evidence-scoped. Routing properties marked as PASS,
+CHARACTERIZED, or PARTIAL below are supported by reviewed LAB-001A and
+LAB-001B evidence. Properties that remain NOT RUN must not be treated as
+validated.
 
 ```text
 Configured != Validated
@@ -57,12 +59,12 @@ Configured != Validated
 
 | Test | Purpose | State |
 |---|---|---|
-| T01 | SOCKS5 TCP connectivity | NOT RUN |
+| T01 | SOCKS5 TCP connectivity | PASS |
 | T02 | Public exit IP observation | NOT RUN |
-| T03 | DNS route validation | NOT RUN |
-| T04 | UDP behavior | NOT RUN |
-| T05 | IPv4 / IPv6 behavior | NOT RUN |
-| T06 | RethinkDNS firewall persistence | NOT RUN |
+| T03 | DNS route validation | PARTIAL |
+| T04 | UDP behavior | PASS |
+| T05 | IPv4 / IPv6 behavior | CHARACTERIZED |
+| T06 | RethinkDNS firewall persistence | PARTIAL |
 | T07 | SOCKS5 failure behavior | NOT RUN |
 | T08 | RethinkDNS restart behavior | NOT RUN |
 | T09 | Network transition behavior | NOT RUN |
@@ -100,6 +102,27 @@ Evidence will be stored under:
 docs/labs/socks5/evidence/LAB-001/
 ```
 
+Current reviewed evidence reports:
+
+- `LAB-001A-linux-socks5-baseline.md`
+  - Linux HEV source/build baseline.
+  - Listener and authentication validation.
+  - Positive SOCKS5 TCP control.
+  - Two-leg Linux TCP traffic observation.
+
+- `LAB-001B-android-rethink-hev-routing.md`
+  - Android / RethinkDNS LAN integration.
+  - Private-IP routing behavior.
+  - Authenticated Android-to-HEV TCP.
+  - Two-leg TCP correlation.
+  - SOCKS5 UDP ASSOCIATE and UDP relay validation.
+  - Two-leg UDP correlation.
+  - IPv4 / IPv6 behavior and IPv4-only A/B validation.
+
+LAB-001A and LAB-001B are evidence phases supporting the master
+T01-T10 validation matrix. A PASS in one phase does not imply that
+unrelated master tests have been executed.
+
 Evidence may include sanitized:
 
 - packet captures
@@ -111,5 +134,5 @@ Evidence may include sanitized:
 - screenshots
 - test notes
 
-Sensitive identifiers, credentials, public addresses, and unrelated traffic
-must be sanitized before publication.
+Sensitive identifiers, credentials, user-attributable public addresses,
+and unrelated traffic must be sanitized before publication.
