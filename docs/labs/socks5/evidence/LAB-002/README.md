@@ -69,3 +69,13 @@ One successful flow != universal routing behavior
   - TCP/1080 and UDP/1081 operation restored after ACL correction
   - generic deny policy preserved
   - WireGuard not introduced
+
+### LAB-002B
+
+- `LAB-002B-wireguard-socks5-configuration-coexistence.md`
+  - WireGuard UI state became ON while SOCKS5 remained ON
+  - configuration behavior classified B1
+  - no warning or incompatibility message observed
+  - no deliberate application workload generated
+  - no HEV traffic observed during the configuration-only window
+  - packet-routing order remains unvalidated
