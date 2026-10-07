@@ -1,6 +1,6 @@
 # LAB-002B — WireGuard + SOCKS5 Configuration Coexistence
 
-**Status:** PASS / B1 CONFIGURATION COEXISTENCE
+**Status:** CHARACTERIZED / TRANSIENT COEXISTENCE; STABLE ACTIVE COEXISTENCE NOT ESTABLISHED
 
 ## 1. Objective
 
@@ -200,3 +200,32 @@ SOCKS5       ON
 LAB-002C will introduce controlled application traffic and determine
 whether the A50 continues to contact the HEV SOCKS5 endpoint while both
 features are shown enabled.
+
+
+## Corrective reconciliation — LAB-002B-R2
+
+Later controlled testing refined this phase.
+
+The original UI-coexistence observation remains valid, but durable
+simultaneous operation was not established.
+
+After restoring a missing SOCKS5 credential, the SOCKS5-only path was
+validated successfully.
+
+A subsequent test then enabled WireGuard with the WireGuard Advanced
+`Always-on` option disabled.
+
+The UI initially showed both WireGuard and SOCKS5 ON, but after
+approximately 30 seconds SOCKS5 was observed OFF without a deliberate
+browser workload and without new HEV traffic.
+
+The corrected interpretation is therefore:
+
+~~~text
+configuration coexistence           OBSERVED
+transient active UI coexistence     OBSERVED
+stable active coexistence           NOT ESTABLISHED
+~~~
+
+See `LAB-002B-R2-proxy-state-reconciliation.md` for the complete
+evidence reconciliation.

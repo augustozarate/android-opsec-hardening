@@ -1,6 +1,6 @@
 # LAB-002H — SOCKS5 Failure Behavior
 
-**Status:** PASS / TESTED WG FLOW UNAFFECTED BY HEV OUTAGE
+**Status:** CHARACTERIZED / HEV OUTAGE CONTROL; ACTIVE SOCKS PRECONDITION NOT ESTABLISHED
 
 ## 1. Objective
 
@@ -312,3 +312,24 @@ The goal will be to determine whether RethinkDNS:
 - or exhibits another explicitly observed behavior
 
 No fallback behavior will be assumed before evidence is collected.
+
+
+## Corrective reconciliation — proxy-state precondition
+
+Subsequent LAB-002B-R1/R2 testing showed that SOCKS5 may retain its
+configuration while its active toggle is OFF, and that a transient
+WireGuard + SOCKS5 ON state does not establish durable coexistence.
+
+Therefore this phase retains its observed transport evidence:
+
+- HEV was deliberately unavailable
+- the tested WireGuard-associated workload succeeded
+- no A50-to-HEV attempt was observed
+
+But it does not establish that SOCKS5 remained actively enabled during
+the HEV outage.
+
+The phase is therefore reclassified as CHARACTERIZED rather than PASS
+for the original SOCKS5-failure objective.
+
+See `LAB-002B-R2-proxy-state-reconciliation.md`.

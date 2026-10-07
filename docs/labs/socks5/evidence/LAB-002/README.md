@@ -163,3 +163,15 @@ One successful flow != universal routing behavior
   - functional result reconciled as HEV_FAILURE_DID_NOT_AFFECT_TESTED_WG_FLOW
   - SOCKS5 final UI persistence remains UNKNOWN / NOT VERIFIED
   - HEV successfully restored after the controlled outage
+
+### LAB-002B-R2 — corrective reconciliation
+
+- `LAB-002B-R2-proxy-state-reconciliation.md`
+  - records the failed SOCKS5 baseline caused by an absent Rethink credential
+  - preserves the independent HEV authentication/connectivity self-test
+  - records successful SOCKS5 operation after credential restoration
+  - records transient `WireGuard ON + SOCKS5 ON` coexistence
+  - records SOCKS5 transitioning OFF with WireGuard Advanced `Always-on` disabled
+  - reclassifies LAB-002B as CHARACTERIZED
+  - narrows LAB-002H to an HEV-outage control with active-SOCKS precondition not established
+  - leaves LAB-002I NOT RUN pending proxy-state arbitration analysis
