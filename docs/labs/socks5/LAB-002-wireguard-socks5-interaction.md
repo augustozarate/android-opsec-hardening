@@ -220,7 +220,7 @@ No model is considered valid until traffic evidence supports it.
 | LAB-002F | DNS behavior comparison | PASS |
 | LAB-002G | UDP behavior comparison | PASS |
 | LAB-002H | SOCKS5 failure behavior | CHARACTERIZED |
-| LAB-002I | WireGuard failure behavior | NOT RUN |
+| LAB-002I | WireGuard failure behavior | CHARACTERIZED |
 | LAB-002J | Fail-open / bypass characterization | NOT RUN |
 
 ## 6. Safety and evidence rules
@@ -369,8 +369,69 @@ Configured
 
 LAB-002B remains `CHARACTERIZED`.
 
-LAB-002I and LAB-002J remain `NOT RUN`.
+At the time of that LAB-002B follow-up, LAB-002I and LAB-002J remained `NOT RUN`.
 
 Detailed evidence:
 
 `evidence/LAB-002/LAB-002B-R3-R6-runtime-policy-precedence.md`
+
+<!-- LAB-002I-FOLLOWUP -->
+## LAB-002I follow-up — controlled WireGuard failure and recovery
+
+LAB-002I is now `CHARACTERIZED`.
+
+A dedicated Kali WireGuard peer was used to establish a healthy
+Brave -> `wg20` -> `wg-lab` -> Internet baseline.
+
+During infrastructure validation, a Docker-managed IPv4 `FORWARD`
+chain with policy `DROP` was found to discard the laboratory forwarded
+traffic after the earlier `opsec_wg_lab` base-chain accept. Two narrow
+`DOCKER-USER` rules were added only for the laboratory subnet and
+return traffic. The global Docker forwarding policy was not changed.
+
+The accepted sequence was:
+
+~~~text
+healthy baseline
+    ->
+controlled A50 -> Kali UDP/51820 drop
+    ->
+WireGuard transport unavailable
+    ->
+wg20 application selection persists
+    ->
+failure drop removed
+    ->
+fresh handshake
+    ->
+bidirectional application transport recovered
+~~~
+
+During the controlled failure:
+
+- the Kali WireGuard handshake timestamp did not advance;
+- server RX remained unchanged;
+- the injected rule dropped 350 WireGuard UDP packets;
+- 86 handshake initiations were observed with zero responses;
+- `wg-lab` observed zero inner packets;
+- Brave failed to load;
+- Brave remained associated with `wg20`;
+- no Base or SOCKS5 selection was observed by the experiment counters.
+
+After removal of only the injected failure rule:
+
+- a fresh WireGuard handshake was observed;
+- Firestack transitioned from `unresponsive` to `ok`;
+- bidirectional `wg-lab` HTTPS traffic returned;
+- forwarding counters increased in both directions;
+- Brave loaded successfully without Android reconfiguration.
+
+LAB-002I therefore characterizes WireGuard transport failure,
+selection persistence, and automatic recovery for the tested state.
+
+It does not classify the behavior as universally fail-open or
+fail-closed. That remains the scope of LAB-002J.
+
+Detailed evidence:
+
+`evidence/LAB-002/LAB-002I-wireguard-failure-recovery.md`

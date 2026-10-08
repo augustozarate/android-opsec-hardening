@@ -174,7 +174,7 @@ One successful flow != universal routing behavior
   - records SOCKS5 transitioning OFF with WireGuard Advanced `Always-on` disabled
   - reclassifies LAB-002B as CHARACTERIZED
   - narrows LAB-002H to an HEV-outage control with active-SOCKS precondition not established
-  - leaves LAB-002I NOT RUN pending proxy-state arbitration analysis
+  - at that point, leaves LAB-002I NOT RUN pending proxy-state arbitration analysis
 
 <!-- LAB-002B-R3-R6-FOLLOWUP -->
 ### LAB-002B-R3-R6 — runtime policy and per-app precedence
@@ -186,4 +186,24 @@ One successful flow != universal routing behavior
   - separates DNS proxy selection from application proxy selection
   - validates the `BLOQUEO ON/OFF` A/B for WhatsApp assigned to inactive `wg14`
   - keeps LAB-002B classified as `CHARACTERIZED`
-  - keeps LAB-002I and LAB-002J as `NOT RUN`
+  - at that point, keeps LAB-002I and LAB-002J as `NOT RUN`
+
+<!-- LAB-002I-CURRENT -->
+### LAB-002I — controlled WireGuard failure and recovery
+
+- `LAB-002I-wireguard-failure-recovery.md`
+  - establishes a healthy Brave -> `wg20` -> Kali WireGuard baseline
+  - records the Docker `FORWARD` policy interaction discovered during baseline validation
+  - uses narrow `DOCKER-USER` forwarding exceptions for the laboratory subnet
+  - injects a controlled A50 -> Kali UDP/51820 failure without changing Android
+  - confirms frozen server handshake, zero inner `wg-lab` traffic, and failed Brave workload
+  - observes persistent Brave -> `wg20` selection during transport failure
+  - observes no Base or SOCKS5 selection by the I-02 experiment counters
+  - removes only the injected failure rule
+  - confirms fresh handshake, bidirectional transport, and successful Brave recovery
+  - classifies LAB-002I as `CHARACTERIZED`
+  - leaves fail-open / bypass classification to LAB-002J
+
+The older `LAB-002I NOT RUN` statements in the LAB-002B reconciliation
+sections describe the state at the time those earlier follow-ups were
+performed; they are not the current LAB-002I phase status.
