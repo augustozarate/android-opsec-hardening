@@ -175,3 +175,15 @@ One successful flow != universal routing behavior
   - reclassifies LAB-002B as CHARACTERIZED
   - narrows LAB-002H to an HEV-outage control with active-SOCKS precondition not established
   - leaves LAB-002I NOT RUN pending proxy-state arbitration analysis
+
+<!-- LAB-002B-R3-R6-FOLLOWUP -->
+### LAB-002B-R3-R6 — runtime policy and per-app precedence
+
+- `LAB-002B-R3-R6-runtime-policy-precedence.md`
+  - records ADB/logcat runtime characterization
+  - corrects the Android TUN-versus-WLAN capture identity
+  - records the restored end-to-end SOCKS5 baseline
+  - separates DNS proxy selection from application proxy selection
+  - validates the `BLOQUEO ON/OFF` A/B for WhatsApp assigned to inactive `wg14`
+  - keeps LAB-002B classified as `CHARACTERIZED`
+  - keeps LAB-002I and LAB-002J as `NOT RUN`

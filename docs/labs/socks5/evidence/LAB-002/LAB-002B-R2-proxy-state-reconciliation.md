@@ -320,3 +320,46 @@ The goal is to determine whether Rethink records an explicit:
 - or other internal event
 
 No specific mechanism is assumed before evidence is collected.
+
+<!-- LAB-002B-R3-R6-FOLLOWUP -->
+## 13. Follow-up — LAB-002B-R3-R6
+
+The runtime/debug investigation proposed above was subsequently
+performed.
+
+The follow-up identified two confounders in the original R3 transition:
+
+1. the HEV SOCKS5 backend was not running during the initial runtime
+   observation
+2. WhatsApp had a per-application WireGuard `BLOQUEO` policy that pinned
+   UID `10316` to inactive `wg14`
+
+After restoring a known-good HEV backend, a clean end-to-end SOCKS5
+baseline was re-established with Brave and `example.com`.
+
+A controlled A/B then changed only the per-profile `BLOQUEO` state while
+leaving the application assigned to the same inactive WireGuard profile.
+
+Observed result:
+
+~~~text
+BLOQUEO ON
+→ WhatsApp selected wg14
+→ wg14 unavailable
+→ no application-flow S5 fallback
+
+BLOQUEO OFF
+→ no wg14 lockdown selection
+→ WhatsApp application flows selected S5
+→ physical A50-to-HEV transport observed
+~~~
+
+This supports a narrower causal conclusion about per-profile lockdown
+precedence in the tested RethinkDNS v0.5.7 configuration.
+
+It does not establish a universal WireGuard/SOCKS5 precedence rule or
+stable simultaneous active transport.
+
+See:
+
+`LAB-002B-R3-R6-runtime-policy-precedence.md`

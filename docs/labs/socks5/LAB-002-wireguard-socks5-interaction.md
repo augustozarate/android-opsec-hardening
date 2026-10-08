@@ -329,3 +329,48 @@ WireGuard interaction with the already validated SOCKS5 path.
 
 Results from LAB-002 must therefore be compared against LAB-001B rather
 than silently incorporated into the previous baseline.
+
+<!-- LAB-002B-R3-R6-FOLLOWUP -->
+## LAB-002B follow-up — runtime policy precedence
+
+Subsequent LAB-002B-R3 through LAB-002B-R6 testing refined the
+`CHARACTERIZED` result without changing the master matrix status.
+
+The follow-up established:
+
+- the initial R3 WireGuard/SOCKS transition was confounded by an
+  unavailable HEV backend and a pre-existing per-app WireGuard lockdown
+- Android Rethink TUN identity and physical WLAN identity must be
+  distinguished during packet capture
+- the SOCKS5 Android-to-HEV path was restored and validated end-to-end
+- DNS proxy selection and application-flow proxy selection are distinct
+  observables
+- with WhatsApp assigned to inactive `wg14`, per-profile `BLOQUEO ON`
+  pinned application flows to `wg14` and prevented observed S5 fallback
+- changing only `BLOQUEO ON -> OFF` allowed WhatsApp application flows
+  to select S5 while the profile remained assigned and inactive
+
+The validated A/B is scoped to the tested RethinkDNS v0.5.7
+configuration and must not be generalized into a universal
+WireGuard/SOCKS5 precedence rule.
+
+The project state model is therefore extended to:
+
+~~~text
+Configured
+!= Assigned
+!= Enabled
+!= Persistently Enabled
+!= Active
+!= Selected
+!= Locked
+!= Successfully Transporting Traffic
+~~~
+
+LAB-002B remains `CHARACTERIZED`.
+
+LAB-002I and LAB-002J remain `NOT RUN`.
+
+Detailed evidence:
+
+`evidence/LAB-002/LAB-002B-R3-R6-runtime-policy-precedence.md`
